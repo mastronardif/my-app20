@@ -1,0 +1,19 @@
+<app-navbar></app-navbar>
+
+<div class="wrapper">
+  <h1>
+    Angular Spinner Interceptor
+    <button (click)="triggerApiCall()">Trigger API Call</button>
+    DEMO
+  </h1>
+</div>
+
+<!-- Spinner that blocks UI -->
+<!-- <app-spinner [blockUi]="true"></app-spinner> -->
+
+<!-- Spinner that allows clicks through -->
+<app-spinner [blockUi]="false"></app-spinner>
+
+<pre style="background-color: pink;">
+  currentApplicationVersion = {{ currentApplicationVersion | json }}
+</pre>

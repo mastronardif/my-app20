@@ -1,0 +1,12 @@
+<div *ngIf="(spinner.state$ | async) as state">
+  <div *ngIf="state.count > 0"
+       class="backdrop"
+       [class.no-block]="!blockUi">
+    <div class="spinner-circle">
+      <div class="spinner-text">
+        {{ state.count }} requests<br>{{ state.elapsed }}s
+      </div>
+      <div class="spinner-ring"></div>
+    </div>
+  </div>
+</div>

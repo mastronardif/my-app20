@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 // import { WtfComponent } from './comps/wtf/wtf.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import { TableFromUrlComponent } from './components/tables/table-from-url/table-from-url.component';
 // import { AddressComponent } from './comps/address/address.component';
 // import { DashboardComponent } from './comps/dashboard/dashboard.component';
 // import { TableComponent } from './comps/table/table.component';
@@ -30,7 +31,7 @@ const routes: Routes = [
   // { path: 'gallery',  component: GalleryComponent },
   // { path: 'root',  component: RootComponent },
   // { path: 'table',  component: TableComponent },
-  // { path: 'tablefromurl',  component: TableFromUrlComponent },
+  { path: 'tablefromurl',  component: TableFromUrlComponent },
   // { path: 'tableDynamic',  component: TableDynamicColumnsExampleComponent },
   // { path: 'tree',  component: TreeComponent },
   // { path: 'myorgchart', component: MyorgchartComponent },

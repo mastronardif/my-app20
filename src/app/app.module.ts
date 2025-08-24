@@ -7,10 +7,18 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // Angular Material Modules
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
 import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
+
+import { MatDialogModule } from '@angular/material/dialog';
+import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 
@@ -24,12 +32,15 @@ import { SpinnerInterceptor } from './interceptors/spinner.interceptor';
 
 // Standalone Component
 import { NavbarComponent } from './components/navbar/navbar.component';
+import { TableFromUrlComponent } from './components/tables/table-from-url/table-from-url.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
     PageNotFoundComponent,
+    TableFromUrlComponent,
     SpinnerComponent
   ],
   imports: [
@@ -37,10 +48,16 @@ import { NavbarComponent } from './components/navbar/navbar.component';
     BrowserAnimationsModule,
     HttpClientModule,
     MatSidenavModule,
+    MatSortModule,
+    MatTableModule,
     MatToolbarModule,
     MatIconModule,
     MatListModule,
     MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDialogModule,
+    FormsModule,
     AppRoutingModule
     // NavbarComponent // import standalone component
   ],

@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { NavbarComponent } from './components/navbar/navbar.component';
 import { HttpClient } from '@angular/common/http';
 import { finalize, forkJoin } from 'rxjs';
+import { triggerApiCall } from './utils/api-utils';
+import { SpinnerService } from './services/spinner.service';
 
 @Component({
   selector: 'app-root',
@@ -13,11 +14,21 @@ import { finalize, forkJoin } from 'rxjs';
 export class AppComponent {
   currentApplicationVersion = '1.0.0';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private spinner: SpinnerService) {}
 
-  // triggerApiCall() {
-  //   console.log('Simulate API call here...');
-  // }
+  triggerApiCall() {
+    triggerApiCall(this.http).subscribe({
+      next: (res) => {
+        console.log('All done:', res);
+      },
+      error: (err) => {
+        console.error('One request failed:', err);
+      },
+      complete: () => {
+        console.log('All requests completed');
+      }
+    });
+  }
   triggerApiCall00 = () => {
     for (let j = 0, j_len = 10; j < j_len; j++) {
       for (let i = 1, i_len = 100; i < i_len; i++) {
@@ -28,7 +39,7 @@ export class AppComponent {
     }
   };
 
-  triggerApiCall = () => {
+  triggerApiCall22 = () => {
     // var loading = true;
 
     forkJoin([

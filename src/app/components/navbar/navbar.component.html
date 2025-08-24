@@ -19,12 +19,18 @@
       <a mat-list-item [routerLink]="['/dashboard']">Dashboard</a>
       <a mat-list-item [routerLink]="['/gallery']">Gallery</a>
       <a mat-list-item [routerLink]="['/table']">Table</a>
+
+    -->
       <a mat-list-item [routerLink]="['/tablefromurl']">TableFromUrl</a>
-      <a mat-list-item [routerLink]="['/tableDynamic']">TableDynamic</a>
+
+<!--
+            <a mat-list-item [routerLink]="['/tableDynamic']">TableDynamic</a>
+
       <a mat-list-item [routerLink]="['/tree']">Tree</a>
       <a mat-list-item [routerLink]="['/wtf']">WTF</a>
       <a mat-list-item [routerLink]="['/wtf', now()]">/wtf/{{ now() }}</a>
-      <a mat-list-item [routerLink]="['/mylist', now()]">/mylist/{{ now() }}</a> -->
+      <a mat-list-item [routerLink]="['/mylist', now()]">/mylist/{{ now() }}</a>
+      -->
     </mat-nav-list>
   </mat-sidenav>
 
@@ -44,6 +50,6 @@
       &nbsp;<span>INFO: {{ currentApplicationVersion }}</span>
     </mat-toolbar>
 
-    <!-- <router-outlet></router-outlet> -->
+    <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>

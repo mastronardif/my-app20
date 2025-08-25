@@ -28,3 +28,27 @@ mat-progress-spinner {
   transform: translate(-50%, -50%);
   z-index: 95;
 }
+
+mat-toolbar {
+  display: flex;
+  align-items: center;
+}
+
+.app-title {
+  font-weight: bold;
+  margin-right: 16px;
+}
+
+.version-info {
+  margin-right: 16px;
+}
+
+.spacer {
+  flex: 1 1 auto; /* pushes button + text to right */
+}
+
+.custom-text {
+  margin-left: 12px;
+  font-style: italic;
+}
+

@@ -15,14 +15,14 @@ import { TableFromUrlComponent } from './components/tables/table-from-url/table-
 // import { MyorgchartComponent } from './comps/myorgchart/myorgchart.component';
 // import { TableDynamicColumnsExampleComponent } from './comps/tables/table-dynamic-columns-example/table-dynamic-columns-example';
 // import { MylistComponent } from './comps/mylist/mylist.component';
-
+import { AppComponent } from './app.component';
 const routes: Routes = [
   // {
   //   path: 'compose',
   //   component: WtfComponent,
   //   outlet: 'popup'
   // },
-
+{ path: 'app',  component: AppComponent },
   // { path: 'lazy', loadChildren: () => import('./lazyboy/lazyboy.module').then(m => m.LazyboyModule) },
 
   // { path: 'accordian',  component: AccordianComponent },

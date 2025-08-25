@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, effect, Inject, OnInit, ViewChild } from '@angular/core';
 import {
   MatDialog,
   MatDialogRef,
@@ -12,6 +12,7 @@ import { merge } from 'rxjs';
 // import { LoadingService } from 'src/app/loading.service';
 // import { HeroService } from 'src/app/services/hero.service';
 import { HttpClient } from '@angular/common/http';
+import { GlobalDataService } from '../../../services/global-data.service';
 
 export interface User {
   name: string;
@@ -73,22 +74,27 @@ export class TableFromUrlComponent implements OnInit {
 
   //loading$ = this.loader.loading$;
 
-  constructor(private http: HttpClient, public dialog: MatDialog) {}
+  constructor(private http: HttpClient, public dialog: MatDialog, private globalData: GlobalDataService) {
+    // react whenever the signal changes
+    effect(() => {
+      const newValue = this.globalData.message();
+      console.log("Global data changed:", newValue);
+
+      // trigger your function
+      if (newValue) {
+        this.getUrlData(newValue);
+        // this.editUser(this.gINFO, newValue);
+      }
+    });
+  }
 
   ngOnInit() {
-    // this.service
-    //   //.getXYZ('https://jsonplaceholder.typicode.com/users')
-    //   //.getXYZ('http://localhost:8080/api/data')
-    //   .getXYZ('http://127.0.0.1:8091/tutorial-server-0.0.1-SNAPSHOT/api/data')
-
       this.http.get<any[]>('https://jsonplaceholder.typicode.com/users')
       .subscribe({
         next: (v) => {
           console.log(v);
           this.users = v;
           this.displayedColumns = Object.keys(this.users[0]);
-          //this.displayedColumnsExtra.push('action');
-          //this.displayedColumnsAll = this.displayedColumns.concat(this.displayedColumnsExtra);
           this.dataSource = new MatTableDataSource(v);
           this.dataSource.sort = this.sort;
         },
@@ -96,39 +102,7 @@ export class TableFromUrlComponent implements OnInit {
         complete: () => console.info('complete'),
         //console.log(this.users);
       });
-    // (users: User[]) => {
-    // this.users = users;
-    // this.dataSource = new MatTableDataSource(users);
-    // this.dataSource.sort = this.sort;
-    //});
   }
-
-  // addItem() {
-  //   this.users.push({
-  //     id: 1,
-  //     name: "Leanne Graham",
-  //     username: "Bret",
-  //     email: "Sincere@april.biz",
-  //     address: {
-  //       street: "Kulas Light",
-  //       suite: "Apt. 556",
-  //       city: "Gwenborough",
-  //       zipcode: "92998-3874",
-  //       geo: {
-  //         lat: "-37.3159",
-  //         lng: "81.1496"
-  //       }
-  //     },
-  //     phone: "1-770-736-8031 x56442",
-  //     website: "hildegard.org",
-  //     company: {
-  //       name: "Romaguera-Crona",
-  //       catchPhrase: "Multi-layered client-server neural-net",
-  //       bs: "harness real-time e-markets"
-  //     }
-  //   });
-  //   this.dataSource = new MatTableDataSource(this.users);
-  // }
 
   editUser(action: string, user: any) {
     // switch on action
@@ -146,6 +120,7 @@ export class TableFromUrlComponent implements OnInit {
         if (url == null || url == "") {
           ;
         } else {
+          this.globalData.updateMessage(url);
           this.getUrlData(url);
           //this.getUrlData('https://jsonplaceholder.typicode.com/users');
         }
@@ -204,6 +179,7 @@ export class TableFromUrlComponent implements OnInit {
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'dialog-overview-example-dialog',
   templateUrl: 'dialog.html',
+  standalone: false,
 })
 // eslint-disable-next-line @angular-eslint/component-class-suffix
 export class DialogOverviewExampleDialog {

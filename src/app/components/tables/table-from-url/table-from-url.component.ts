@@ -1,3 +1,4 @@
+// table-from-url.component.ts
 import { Component, effect, Inject, OnInit, ViewChild } from '@angular/core';
 import {
   MatDialog,
@@ -74,34 +75,51 @@ export class TableFromUrlComponent implements OnInit {
 
   //loading$ = this.loader.loading$;
 
-  constructor(private http: HttpClient, public dialog: MatDialog, private globalData: GlobalDataService) {
-    // react whenever the signal changes
-    effect(() => {
-      const newValue = this.globalData.message();
-      console.log("Global data changed:", newValue);
+  // constructor(private http: HttpClient, public dialog: MatDialog, private globalData: GlobalDataService) {
+  //   // react whenever the signal changes
+  //   effect(() => {
+  //     const newValue = this.globalData.message();
+  //     console.log("Global data changed:", newValue);
 
-      // trigger your function
-      if (newValue) {
-        this.getUrlData(newValue);
-        // this.editUser(this.gINFO, newValue);
-      }
-    });
-  }
+  //     // trigger your function
+  //     if (newValue) {
+  //       this.getUrlData(newValue);
+  //       // this.editUser(this.gINFO, newValue);
+  //     }
+  //   });
+  // }
+
+  constructor(private http: HttpClient, public dialog: MatDialog, private globalData: GlobalDataService) {
+  let firstRun = true;
+  effect(() => {
+    const newValue = this.globalData.message();
+    if (firstRun) {
+      firstRun = false;
+      return; // skip initial run
+    }
+    console.log("Global data changed:", newValue);
+    if (newValue) {
+      this.getUrlData(newValue);
+    }
+  });
+}
 
   ngOnInit() {
-      this.http.get<any[]>('https://jsonplaceholder.typicode.com/users')
-      .subscribe({
-        next: (v) => {
-          console.log(v);
-          this.users = v;
-          this.displayedColumns = Object.keys(this.users[0]);
-          this.dataSource = new MatTableDataSource(v);
-          this.dataSource.sort = this.sort;
-        },
-        error: (e) => console.error(`\tERROR occured: ${JSON.stringify(e)}`),
-        complete: () => console.info('complete'),
-        //console.log(this.users);
-      });
+    console.log(`'- ------------- -------------  ngOnInit'`);
+
+      // this.http.get<any[]>('https://jsonplaceholder.typicode.com/users')
+      // .subscribe({
+      //   next: (v) => {
+      //     console.log(v);
+      //     this.users = v;
+      //     this.displayedColumns = Object.keys(this.users[0]);
+      //     this.dataSource = new MatTableDataSource(v);
+      //     this.dataSource.sort = this.sort;
+      //   },
+      //   error: (e) => console.error(`\tERROR occured: ${JSON.stringify(e)}`),
+      //   complete: () => console.info('complete'),
+      //   //console.log(this.users);
+      // });
   }
 
   editUser(action: string, user: any) {
@@ -121,7 +139,7 @@ export class TableFromUrlComponent implements OnInit {
           ;
         } else {
           this.globalData.updateMessage(url);
-          this.getUrlData(url);
+          // this.getUrlData(url);
           //this.getUrlData('https://jsonplaceholder.typicode.com/users');
         }
         break;
@@ -175,20 +193,20 @@ export class TableFromUrlComponent implements OnInit {
 
 }
 
-@Component({
-  // eslint-disable-next-line @angular-eslint/component-selector
-  selector: 'dialog-overview-example-dialog',
-  templateUrl: 'dialog.html',
-  standalone: false,
-})
-// eslint-disable-next-line @angular-eslint/component-class-suffix
-export class DialogOverviewExampleDialog {
-  constructor(
-    public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: User
-  ) {}
+// @Component({
+//   // eslint-disable-next-line @angular-eslint/component-selector
+//   selector: 'dialog-overview-example-dialog',
+//   templateUrl: 'dialog.html',
+//   standalone: false,
+// })
+// // eslint-disable-next-line @angular-eslint/component-class-suffix
+// export class DialogOverviewExampleDialog {
+//   constructor(
+//     public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
+//     @Inject(MAT_DIALOG_DATA) public data: User
+//   ) {}
 
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-}
+//   onNoClick(): void {
+//     this.dialogRef.close();
+//   }
+// }

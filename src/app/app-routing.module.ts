@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 // import { WtfComponent } from './comps/wtf/wtf.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { TableFromUrlComponent } from './components/tables/table-from-url/table-from-url.component';
+import { AppComponent } from './app.component';
 // import { AddressComponent } from './comps/address/address.component';
 // import { DashboardComponent } from './comps/dashboard/dashboard.component';
 // import { TableComponent } from './comps/table/table.component';
@@ -15,14 +16,14 @@ import { TableFromUrlComponent } from './components/tables/table-from-url/table-
 // import { MyorgchartComponent } from './comps/myorgchart/myorgchart.component';
 // import { TableDynamicColumnsExampleComponent } from './comps/tables/table-dynamic-columns-example/table-dynamic-columns-example';
 // import { MylistComponent } from './comps/mylist/mylist.component';
-import { AppComponent } from './app.component';
+    // import { AppComponent } from './app.component';
 const routes: Routes = [
   // {
   //   path: 'compose',
   //   component: WtfComponent,
   //   outlet: 'popup'
   // },
-{ path: 'app',  component: AppComponent },
+
   // { path: 'lazy', loadChildren: () => import('./lazyboy/lazyboy.module').then(m => m.LazyboyModule) },
 
   // { path: 'accordian',  component: AccordianComponent },
@@ -31,7 +32,10 @@ const routes: Routes = [
   // { path: 'gallery',  component: GalleryComponent },
   // { path: 'root',  component: RootComponent },
   // { path: 'table',  component: TableComponent },
-  { path: 'tablefromurl',  component: TableFromUrlComponent },
+   { path: 'nf', component: PageNotFoundComponent },
+    { path: 'tablefromurl', component: TableFromUrlComponent },
+    { path: 'app',  component: AppComponent },
+  // { path: 'tablefromurl',  component: TableFromUrlComponent },
   // { path: 'tableDynamic',  component: TableDynamicColumnsExampleComponent },
   // { path: 'tree',  component: TreeComponent },
   // { path: 'myorgchart', component: MyorgchartComponent },

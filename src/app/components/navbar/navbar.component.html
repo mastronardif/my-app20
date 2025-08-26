@@ -4,7 +4,7 @@
     [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
     <mat-toolbar>Menu</mat-toolbar>
     <mat-nav-list matSort>
-      <a mat-list-item href="/app">app </a>
+
       <a mat-list-item href="#">*R Link 1</a>
       <a mat-list-item href="#">*R Link 2</a>
       <a mat-list-item href="/wtf">*R Link 3/wtf</a>
@@ -17,6 +17,8 @@
 
     -->
       <a mat-list-item [routerLink]="['/tablefromurl']">TableFromUrl</a>
+      <a mat-list-item [routerLink]="['/nf']">nf</a>
+      <a mat-list-item [routerLink]="['/app']">app</a>
 
       <!--
             <a mat-list-item [routerLink]="['/tableDynamic']">TableDynamic</a>
@@ -32,9 +34,9 @@
   <!-- Main Content -->
   <mat-sidenav-content>
     <mat-toolbar color="primary">
-      <button *ngIf="isHandset$ | async" type="button" aria-label="Toggle sidenav" mat-icon-button
+      <button *ngIf="isHandset$ | async" type="button" aria-label="Toggle sidenav" mat-icon-button class="hamburger-button"
         (click)="drawer.toggle()">
-        <!-- <mat-icon aria-label="Side nav toggle icon">menu</mat-icon> -->
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
       <span>my-app</span>
       &nbsp;<span>INFO: {{ currentApplicationVersion }}</span>

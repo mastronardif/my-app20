@@ -52,3 +52,10 @@ mat-toolbar {
   font-style: italic;
 }
 
+/* app.component.css or navbar component CSS */
+.hamburger-button mat-icon {
+  color: yellow;  /* Makes the icon yellow */
+}
+
+
+

@@ -33,6 +33,8 @@ import { SpinnerInterceptor } from './interceptors/spinner.interceptor';
 // Standalone Component
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { TableFromUrlComponent } from './components/tables/table-from-url/table-from-url.component';
+import { RouteReuseStrategy } from '@angular/router';
+import { CustomReuseStrategy } from './reuse-strategy';
 
 
 @NgModule({
@@ -62,7 +64,8 @@ import { TableFromUrlComponent } from './components/tables/table-from-url/table-
     // NavbarComponent // import standalone component
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: SpinnerInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: SpinnerInterceptor, multi: true },
+    { provide: RouteReuseStrategy, useClass: CustomReuseStrategy }
   ],
   bootstrap: [AppComponent]
 })

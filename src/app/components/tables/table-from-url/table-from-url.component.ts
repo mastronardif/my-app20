@@ -90,13 +90,13 @@ export class TableFromUrlComponent implements OnInit {
   // }
 
   constructor(private http: HttpClient, public dialog: MatDialog, private globalData: GlobalDataService) {
-  let firstRun = true;
+  // let firstRun = true;
   effect(() => {
     const newValue = this.globalData.message();
-    if (firstRun) {
-      firstRun = false;
-      return; // skip initial run
-    }
+    // if (firstRun) {
+    //   firstRun = false;
+    //   return; // skip initial run
+    // }
     console.log("Global data changed:", newValue);
     if (newValue) {
       this.getUrlData(newValue);
@@ -105,9 +105,12 @@ export class TableFromUrlComponent implements OnInit {
 }
 
   ngOnInit() {
+    let uuu = 'https://jsonplaceholder.typicode.com/posts/1/comments?_delay=5000'; //'https://jsonplaceholder.typicode.com/users';
     console.log(`'- ------------- -------------  ngOnInit'`);
+    this.globalData.updateMessage(uuu);
+    //this.getUrlData(newValue);
 
-      // this.http.get<any[]>('https://jsonplaceholder.typicode.com/users')
+      // this.http.get<any[]>('https://jsonplaceholder.typicode.com/posts/1/comments?_delay=5000')
       // .subscribe({
       //   next: (v) => {
       //     console.log(v);

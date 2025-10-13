@@ -1,36 +1,95 @@
 .table-container {
-  padding: 16px;
-  max-width: 900px;
-  margin: auto;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden; /* 👈 keeps paginator visually inside */
 }
 
 .url-header {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 8px;
-}
-
-.url-field {
-  flex: 1;
-}
-
-.status {
-  margin-bottom: 8px;
-  color: #666;
-}
-
-.error .status {
-  color: red;
+  padding: 12px 16px;
+  background: #f5f5f5;
+  border-bottom: 1px solid #ddd;
 }
 
 .url-input {
   display: flex;
   align-items: center;
   gap: 8px;
+  flex: 1;
 }
 
 .url-input input {
   flex: 1;
-  min-width: 250px;
+  min-width: 200px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.mat-mdc-paginator {
+  border-top: 1px solid #ddd;
+  padding: 0 8px;
+  background: #fafafa; /* 👈 matches header tone */
+}
+
+.table-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  background: #f5f5f5;
+  border-bottom: 1px solid #ddd;
+}
+
+.url-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1 1 auto;
+  min-width: 300px;
+}
+
+.url-info input {
+  flex: 1;
+  min-width: 220px;
+}
+
+.status {
+  white-space: nowrap;
+  color: #555;
+  font-size: 0.9rem;
+}
+
+.filter-field {
+  width: 200px;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+/* Zebra striping for table rows */
+.mat-mdc-row:nth-child(even) {
+  background-color: #fafafa; /* light gray */
+}
+
+.mat-mdc-row:nth-child(odd) {
+  background-color: #ffffff; /* white */
+}
+
+/* Optional: highlight on hover */
+.mat-mdc-row:hover {
+  background-color: #e8f0fe; /* subtle blue tint */
+}
+
+/* Keep header visually distinct */
+.mat-mdc-header-row {
+  background-color: #f1f1f1;
+  font-weight: 600;
 }

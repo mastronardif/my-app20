@@ -1,39 +1,26 @@
 <div class="table-container">
   <!-- Header with editable URL -->
-<div class="url-header" [class.error]="isError">
-  <div class="url-input">
-    <strong>URL:</strong>
-    <input
-      matInput
-      [(ngModel)]="url"
-      placeholder="Enter data URL"
-      (keyup.enter)="loadData()"
-    />
-    <button mat-icon-button color="primary" (click)="loadData()">
-      <mat-icon>refresh</mat-icon>
-    </button>
+  <!-- Unified Header Row -->
+  <div class="table-header">
+    <div class="url-info">
+      <strong>URL:</strong>
+      <input matInput [(ngModel)]="url" placeholder="Enter data URL" (keyup.enter)="loadData()" />
+      <button mat-icon-button color="primary" (click)="loadData()">
+        <mat-icon>refresh</mat-icon>
+      </button>
+    </div>
+
+    <div class="status">{{ statusMessage }}</div>
+
+    <mat-form-field appearance="outline" class="filter-field">
+      <mat-label>Filter</mat-label>
+      <input matInput (keyup)="applyFilter($event)" placeholder="Search..." />
+    </mat-form-field>
   </div>
-  <div>{{ statusMessage }}</div>
-</div>
-
-
-  <!-- Status -->
-  <div class="status">{{ statusMessage }}</div>
-
-  <!-- Filter -->
-  <mat-form-field appearance="outline" class="filter-field">
-    <mat-label>Filter</mat-label>
-    <input matInput (keyup)="applyFilter($event)" placeholder="Search..." />
-  </mat-form-field>
 
   <!-- Data Table -->
-  <table
-    mat-table
-    [dataSource]="dataSource"
-    matSort
-    class="mat-elevation-z8"
-    *ngIf="displayedColumns.length > 0; else noData"
-  >
+  <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8"
+    *ngIf="displayedColumns.length > 0; else noData">
     <ng-container *ngFor="let col of displayedColumns" [matColumnDef]="col">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>
         {{ col | titlecase }}
@@ -45,11 +32,7 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
 
-  <mat-paginator
-    [pageSize]="5"
-    [pageSizeOptions]="[5, 10, 20]"
-    showFirstLastButtons
-  ></mat-paginator>
+  <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
 
   <ng-template #noData>
     <p class="no-data">No data loaded yet.</p>

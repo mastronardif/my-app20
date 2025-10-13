@@ -1,11 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import {
-  AfterViewInit,
-  Component,
-  Input,
-  ViewChild
-} from '@angular/core';
+import { AfterViewInit, Component, Input, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -22,20 +17,20 @@ import { normalizeToArray } from '../../../utils/api-utils';
   imports: [
     CommonModule,
     HttpClientModule,
-    FormsModule,          // ✅ For [(ngModel)]
+    FormsModule, // ✅ For [(ngModel)]
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule,      // ✅ For refresh button
+    MatButtonModule, // ✅ For refresh button
     MatIconModule,
   ],
   templateUrl: './mytable.component.html',
   styleUrls: ['./mytable.component.css'],
 })
 export class MyTableComponent implements AfterViewInit {
-   @Input() url: string = '';
+  @Input() url: string = '';
   displayedColumns: string[] = [];
   dataSource = new MatTableDataSource<any>([]);
   statusMessage = 'Waiting for URL...';
@@ -45,7 +40,6 @@ export class MyTableComponent implements AfterViewInit {
   @ViewChild(MatSort) sort!: MatSort;
 
   constructor(private http: HttpClient) {}
-
 
   ngOnInit() {
     if (this.url) {
@@ -59,48 +53,47 @@ export class MyTableComponent implements AfterViewInit {
   }
 
   loadData(): void {
-  if (!this.url) return;
+    if (!this.url) return;
 
-  this.statusMessage = '⏳ Loading...';
-  this.isError = false;
+    this.statusMessage = '⏳ Loading...';
+    this.isError = false;
 
-  this.http.get<any>(this.url).subscribe({
-    next: (data) => {
-      const normalized = normalizeToArray(data);
+    this.http.get<any>(this.url).subscribe({
+      next: (data) => {
+        const normalized = normalizeToArray(data);
 
-      this.dataSource.data = normalized;
+        this.dataSource.data = normalized;
 
-      if (normalized.length > 0) {
-        this.displayedColumns = Object.keys(normalized[0]);
-        this.statusMessage = `✅ Loaded ${normalized.length} rows`;
-      } else {
+        if (normalized.length > 0) {
+          this.displayedColumns = Object.keys(normalized[0]);
+          this.statusMessage = `✅ Loaded ${normalized.length} rows`;
+        } else {
+          this.displayedColumns = [];
+          this.statusMessage = '⚠️ No rows returned from URL';
+        }
+
+        // Ensure paginator & sort are attached after render
+        setTimeout(() => {
+          this.dataSource.sort = this.sort;
+          this.dataSource.paginator = this.paginator;
+        });
+      },
+      error: (err) => {
+        this.isError = true;
+        this.statusMessage = `❌ Error fetching data: ${err.status} ${err.statusText}`;
+        this.dataSource.data = [];
         this.displayedColumns = [];
-        this.statusMessage = '⚠️ No rows returned from URL';
-      }
+      },
+    });
+  }
 
-      // Ensure paginator & sort are attached after render
-      setTimeout(() => {
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;
-      });
-    },
-    error: (err) => {
-      this.isError = true;
-      this.statusMessage = `❌ Error fetching data: ${err.status} ${err.statusText}`;
-      this.dataSource.data = [];
-      this.displayedColumns = [];
-    },
-  });
-}
-
-/** ✅ Normalizes single object or array into array form */
-// private normalizeToArray(data: any): any[] {
-//   if (data == null) return [];
-//   if (Array.isArray(data)) return data;
-//   if (typeof data === 'object') return [data];
-//   return [];
-// }
-
+  /** ✅ Normalizes single object or array into array form */
+  // private normalizeToArray(data: any): any[] {
+  //   if (data == null) return [];
+  //   if (Array.isArray(data)) return data;
+  //   if (typeof data === 'object') return [data];
+  //   return [];
+  // }
 
   applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value;

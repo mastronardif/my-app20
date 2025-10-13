@@ -1,0 +1,43 @@
+<div class="table-container">
+  <!-- Header -->
+  <div class="url-header" [class.error]="isError">
+    <div><strong>URL:</strong> {{ url }}</div>
+    <div>{{ statusMessage }}</div>
+  </div>
+
+  <!-- Filter -->
+  <mat-form-field appearance="outline" class="filter-field">
+    <mat-label>Filter</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Search..." />
+  </mat-form-field>
+
+  <!-- Data Table -->
+<table
+  mat-table
+  [dataSource]="dataSource"
+  matSort
+  class="mat-elevation-z8"
+  *ngIf="displayedColumns.length > 0; else noData"
+>
+
+    <ng-container *ngFor="let col of displayedColumns" [matColumnDef]="col">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>
+        {{ col | titlecase }}
+      </th>
+      <td mat-cell *matCellDef="let row">{{ row[col] }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+
+  <mat-paginator
+    [pageSize]="5"
+    [pageSizeOptions]="[5, 10, 20]"
+    showFirstLastButtons
+  ></mat-paginator>
+
+  <ng-template #noData>
+    <p class="no-data">No data loaded yet.</p>
+  </ng-template>
+</div>

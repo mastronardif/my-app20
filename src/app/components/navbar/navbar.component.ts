@@ -1,19 +1,10 @@
-import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Observable, of } from 'rxjs';
-import { map, shareReplay } from 'rxjs/operators';
-//import { LoadingService } from 'src/app/loading.service';
 import { HttpClient } from '@angular/common/http';
+import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { map, shareReplay } from 'rxjs/operators';
 import { GlobalDataService } from '../../services/global-data.service';
-
-// export const environment33 = {
-//   appVersion: require('../../services/buildversion.json').version,
-//   production: false
-// };
-// export const environment = {
-//   version: require('../../package.json').version
-// };
 
 @Component({
   selector: 'app-navbar',
@@ -22,77 +13,78 @@ import { GlobalDataService } from '../../services/global-data.service';
   standalone: false,
 })
 export class NavbarComponent implements OnInit, AfterViewInit {
-  @Input() prevent: boolean | undefined;
-  //prevent = true;
-  //loading$: Observable<boolean> //this.loader.loading$;
-  //
+  @Input() prevent?: boolean;
   isHandset$: Observable<boolean>;
-
-  currentApplicationVersion = ''; //environment33.appVersion;
-  //version = environment;
-  // loading$ = this.loader.loading$;
-
-  public now: number = new Date().getTime(); // = Date.now();
+  now = Date.now();
+  navLinks: { path: string; title: string }[] = [];
 
   constructor(
     private http: HttpClient,
-    // public loader: LoadingService,
     private route: ActivatedRoute,
     private router: Router,
     private breakpointObserver: BreakpointObserver,
     public globalData: GlobalDataService
   ) {
-    // initialize isHandset$ inside constructor or ngOnInit
+    // ✅ Build nav links safely
+    // this.navLinks = this.router.config
+    //   .filter(r => !r.data?.['hideFromNav'] && !!r.data?.['title'] && r.path)
+    //   .map(r => ({
+    //     path: '/' + r.path,
+    //     title: r.data?.['title'] ?? '',
+    //   }));
+
+       this.navLinks =    this.router.config
+      .filter(r => !r.data?.['hideFromNav'])
+      .map(r => ({
+        path: '/' + r.path,
+        title: r.data?.['title'] ?? '',
+      }));
+
+
+    // ✅ Track handset layout
     this.isHandset$ = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
-      map((result) => result.matches),
+      map(result => result.matches),
       shareReplay()
     );
 
-    // change isLoading status whenever notified
-    //this.loading$ = this.loader.loading$;
-    // loadingIndicatorService.onLoadingChanged.subscribe(
-    //   (isLoading) => (this.loading = isLoading)
-    // );
-
-    //this.prevent = false;
+    // ✅ Update clock every 15 seconds
     setInterval(() => {
-      this.now = new Date().getTime();
+      this.now = Date.now();
       console.log(`Hello ${this.now}`);
-      //console.log(`VERSION: ${ this.version}`);
     }, 15000);
 
-    //the this thing?? setInterval(this.myFunction, 2000)
-  }
-  ngOnInit(): void {
-    console.log('NavbarComponent:ngOnInit ');
-    //this.prevent = true;
-    //throw new Error('Method not implemented.');
-  }
-  ngAfterViewInit(): void {
-    console.log('NavbarComponent:ngAfterViewInit ');
-    //this.prevent = true;
-    //throw new Error('Method not implemented.');
+    console.log('Router config:', this.router.config);
+console.log('NavLinks:', this.navLinks);
+
+
   }
 
-  myFunction() {
-    this.now = new Date().getTime();
+  ngOnInit(): void {
+    console.log('NavbarComponent initialized');
+  }
+
+  ngAfterViewInit(): void {
+    console.log('NavbarComponent view initialized');
+  }
+
+  myFunction(): void {
+    this.now = Date.now();
     console.log(`Hello ${this.now}`);
   }
 
-  fetchUser() {
+  fetchUser(): void {
     this.http.get('https://api.github.com/users/mastronardif').subscribe((res) => {
       console.log(res);
     });
   }
 
-  onCustomClick() {
+  onCustomClick(): void {
     console.log('Custom button clicked!');
     const input = window.prompt('Enter your message:');
     if (input) {
       console.log('User entered:', input);
-      // do something with input...
+      this.globalData.updateMessage(input);
+      this.fetchUser();
     }
-    this.globalData.updateMessage(input ?? '');
-    this.fetchUser();
   }
 }

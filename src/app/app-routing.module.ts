@@ -1,10 +1,10 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 // import { WtfComponent } from './comps/wtf/wtf.component';
+import { MyMatComponent } from './components/mymat/mymat.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { TableFromUrlComponent } from './components/tables/table-from-url/table-from-url.component';
-import { AppComponent } from './app.component';
 // import { AddressComponent } from './comps/address/address.component';
 // import { DashboardComponent } from './comps/dashboard/dashboard.component';
 // import { TableComponent } from './comps/table/table.component';
@@ -16,7 +16,7 @@ import { AppComponent } from './app.component';
 // import { MyorgchartComponent } from './comps/myorgchart/myorgchart.component';
 // import { TableDynamicColumnsExampleComponent } from './comps/tables/table-dynamic-columns-example/table-dynamic-columns-example';
 // import { MylistComponent } from './comps/mylist/mylist.component';
-    // import { AppComponent } from './app.component';
+// import { AppComponent } from './app.component';
 const routes: Routes = [
   // {
   //   path: 'compose',
@@ -32,9 +32,13 @@ const routes: Routes = [
   // { path: 'gallery',  component: GalleryComponent },
   // { path: 'root',  component: RootComponent },
   // { path: 'table',  component: TableComponent },
-   { path: 'nf', component: PageNotFoundComponent },
-    { path: 'tablefromurl', component: TableFromUrlComponent },
-    { path: 'app',  component: AppComponent },
+  { path: 'nf', component: PageNotFoundComponent, data: { title: 'Not Found' }  },
+  { path: 'tablefromurl', component: TableFromUrlComponent, data: { title: 'url table' } },
+  { path: 'mymat', component: MyMatComponent, data: { title: 'Materal' } },
+
+  { path: 'nf', component: PageNotFoundComponent, data: { title: 'Not Found', hideFromNav: true } }, // dynamic route
+
+  // { path: 'app',  component: AppComponent },
   // { path: 'tablefromurl',  component: TableFromUrlComponent },
   // { path: 'tableDynamic',  component: TableDynamicColumnsExampleComponent },
   // { path: 'tree',  component: TreeComponent },
@@ -47,18 +51,15 @@ const routes: Routes = [
   //{ path: 'mylist',  component: DashboardComponent },
   // { path: 'mylist/:id',  component: MylistComponent },
 
-  { path: '',   redirectTo: '/myapp', pathMatch: 'full' },
-  { path: '**', component: PageNotFoundComponent }
+  { path: '', redirectTo: '/myapp', pathMatch: 'full' },
+  { path: '**', component: PageNotFoundComponent },
 
   //{ path: 'hero/:id', component: HeroDetailComponent }
 ];
 
 @NgModule({
   declarations: [],
-  imports: [
-    CommonModule,
-    RouterModule.forRoot(routes)
-  ],
-  exports: [RouterModule]
+  imports: [CommonModule, RouterModule.forRoot(routes)],
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

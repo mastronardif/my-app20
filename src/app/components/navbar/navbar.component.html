@@ -1,54 +1,47 @@
 <mat-sidenav-container class="sidenav-container">
-  <!-- Sidenav -->
-  <mat-sidenav #drawer class="sidenav" fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-    [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
-    <mat-toolbar>Menu</mat-toolbar>
-    <mat-nav-list matSort>
+  <mat-sidenav
+    #drawer
+    class="sidenav"
+    mode="side"
+    [opened]="true"
+    fixedInViewport
+  >
+    <mat-toolbar color="primary">Navigation</mat-toolbar>
 
-      <a mat-list-item href="#">*R Link 1</a>
-      <a mat-list-item href="#">*R Link 2</a>
-      <a mat-list-item href="/wtf">*R Link 3/wtf</a>
-      <!-- <a mat-list-item [routerLink]="['/lazy']">Lazy Load</a>
-      <a mat-list-item [routerLink]="['/accordian']">Accordian</a>
-      <a mat-list-item [routerLink]="['/address']">Address</a>
-      <a mat-list-item [routerLink]="['/dashboard']">Dashboard</a>
-      <a mat-list-item [routerLink]="['/gallery']">Gallery</a>
-      <a mat-list-item [routerLink]="['/table']">Table</a>
-
-    -->
-      <a mat-list-item [routerLink]="['/tablefromurl']">TableFromUrl</a>
-      <a mat-list-item [routerLink]="['/nf']">nf</a>
-      <a mat-list-item [routerLink]="['/app']">app</a>
-
-      <!--
-            <a mat-list-item [routerLink]="['/tableDynamic']">TableDynamic</a>
-
-      <a mat-list-item [routerLink]="['/tree']">Tree</a>
-      <a mat-list-item [routerLink]="['/wtf']">WTF</a>
-      <a mat-list-item [routerLink]="['/wtf', now()]">/wtf/{{ now() }}</a>
-      <a mat-list-item [routerLink]="['/mylist', now()]">/mylist/{{ now() }}</a>
-      -->
+    <mat-nav-list>
+      <a
+        mat-list-item
+        *ngFor="let link of navLinks"
+        [routerLink]="link.path"
+        routerLinkActive="active-link"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        {{ link.title }}
+      </a>
     </mat-nav-list>
   </mat-sidenav>
 
-  <!-- Main Content -->
   <mat-sidenav-content>
-    <mat-toolbar color="primary">
-      <button *ngIf="isHandset$ | async" type="button" aria-label="Toggle sidenav" mat-icon-button class="hamburger-button"
-        (click)="drawer.toggle()">
-        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+    <mat-toolbar color="primary" class="topbar">
+      <button mat-icon-button (click)="drawer.toggle()" class="menu-button">
+        <mat-icon>menu</mat-icon>
       </button>
-      <span>my-app</span>
-      &nbsp;<span>INFO: {{ currentApplicationVersion }}</span>
+
+      <span class="toolbar-title">My App</span>
 
       <span class="spacer"></span>
+
       <button mat-raised-button color="accent" (click)="onCustomClick()">
         Set Global Data
       </button>
-      <span class="custom-text"> {{ globalData.message() }} </span>
-
+      <span class="custom-text">{{ globalData.message() }}</span>
     </mat-toolbar>
 
-    <router-outlet></router-outlet>
+    <div class="content-area">
+      <router-outlet></router-outlet>
+    </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
+
+<!-- Debug output -->
+<pre>{{ navLinks | json }}</pre>

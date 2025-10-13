@@ -1,0 +1,4 @@
+mat-toolbar {
+  margin: 0;
+  padding-left: 8px; /* keep some breathing room for content */
+}

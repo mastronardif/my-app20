@@ -1,9 +1,24 @@
 <div class="table-container">
-  <!-- Header -->
-  <div class="url-header" [class.error]="isError">
-    <div><strong>URL:</strong> {{ url }}</div>
-    <div>{{ statusMessage }}</div>
+  <!-- Header with editable URL -->
+<div class="url-header" [class.error]="isError">
+  <div class="url-input">
+    <strong>URL:</strong>
+    <input
+      matInput
+      [(ngModel)]="url"
+      placeholder="Enter data URL"
+      (keyup.enter)="loadData()"
+    />
+    <button mat-icon-button color="primary" (click)="loadData()">
+      <mat-icon>refresh</mat-icon>
+    </button>
   </div>
+  <div>{{ statusMessage }}</div>
+</div>
+
+
+  <!-- Status -->
+  <div class="status">{{ statusMessage }}</div>
 
   <!-- Filter -->
   <mat-form-field appearance="outline" class="filter-field">
@@ -12,14 +27,13 @@
   </mat-form-field>
 
   <!-- Data Table -->
-<table
-  mat-table
-  [dataSource]="dataSource"
-  matSort
-  class="mat-elevation-z8"
-  *ngIf="displayedColumns.length > 0; else noData"
->
-
+  <table
+    mat-table
+    [dataSource]="dataSource"
+    matSort
+    class="mat-elevation-z8"
+    *ngIf="displayedColumns.length > 0; else noData"
+  >
     <ng-container *ngFor="let col of displayedColumns" [matColumnDef]="col">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>
         {{ col | titlecase }}

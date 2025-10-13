@@ -18,3 +18,11 @@ export function triggerApiCall(http: HttpClient): Observable<any[]> {
     finalize(() => console.log('All requests completed')),
   );
 }
+
+/** ✅ Normalizes single object or array into array form */
+export function  normalizeToArray(data: any): any[] {
+  if (data == null) return [];
+  if (Array.isArray(data)) return data;
+  if (typeof data === 'object') return [data];
+  return [];
+}

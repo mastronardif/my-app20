@@ -4,15 +4,17 @@ import {
   AfterViewInit,
   Component,
   Input,
-  OnChanges,
-  SimpleChanges,
-  ViewChild,
+  ViewChild
 } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { normalizeToArray } from '../../../utils/api-utils';
 
 @Component({
   selector: 'app-mytable',
@@ -20,18 +22,20 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
   imports: [
     CommonModule,
     HttpClientModule,
+    FormsModule,          // ✅ For [(ngModel)]
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
     MatFormFieldModule,
     MatInputModule,
+    MatButtonModule,      // ✅ For refresh button
+    MatIconModule,
   ],
   templateUrl: './mytable.component.html',
   styleUrls: ['./mytable.component.css'],
 })
-export class MyTableComponent implements AfterViewInit, OnChanges {
-  @Input() url = '';
-
+export class MyTableComponent implements AfterViewInit {
+   @Input() url: string = '';
   displayedColumns: string[] = [];
   dataSource = new MatTableDataSource<any>([]);
   statusMessage = 'Waiting for URL...';
@@ -42,8 +46,9 @@ export class MyTableComponent implements AfterViewInit, OnChanges {
 
   constructor(private http: HttpClient) {}
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['url'] && this.url) {
+
+  ngOnInit() {
+    if (this.url) {
       this.loadData();
     }
   }
@@ -54,35 +59,48 @@ export class MyTableComponent implements AfterViewInit, OnChanges {
   }
 
   loadData(): void {
-    this.statusMessage = '⏳ Loading...';
-    this.isError = false;
+  if (!this.url) return;
 
-    this.http.get<any[]>(this.url).subscribe({
-      next: (data) => {
-        this.dataSource.data = data;
+  this.statusMessage = '⏳ Loading...';
+  this.isError = false;
 
-        if (data.length > 0) {
-          this.displayedColumns = Object.keys(data[0]);
-          this.statusMessage = `✅ Loaded ${data.length} rows`;
-        } else {
-          this.displayedColumns = [];
-          this.statusMessage = '⚠️ No rows returned from URL';
-        }
+  this.http.get<any>(this.url).subscribe({
+    next: (data) => {
+      const normalized = normalizeToArray(data);
 
-        // Ensure sorting works with dynamic headers
-        setTimeout(() => {
-          this.dataSource.sort = this.sort;
-          this.dataSource.paginator = this.paginator;
-        });
-      },
-      error: (err) => {
-        this.isError = true;
-        this.statusMessage = `❌ Error fetching data: ${err.status} ${err.statusText}`;
-        this.dataSource.data = [];
+      this.dataSource.data = normalized;
+
+      if (normalized.length > 0) {
+        this.displayedColumns = Object.keys(normalized[0]);
+        this.statusMessage = `✅ Loaded ${normalized.length} rows`;
+      } else {
         this.displayedColumns = [];
-      },
-    });
-  }
+        this.statusMessage = '⚠️ No rows returned from URL';
+      }
+
+      // Ensure paginator & sort are attached after render
+      setTimeout(() => {
+        this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
+      });
+    },
+    error: (err) => {
+      this.isError = true;
+      this.statusMessage = `❌ Error fetching data: ${err.status} ${err.statusText}`;
+      this.dataSource.data = [];
+      this.displayedColumns = [];
+    },
+  });
+}
+
+/** ✅ Normalizes single object or array into array form */
+// private normalizeToArray(data: any): any[] {
+//   if (data == null) return [];
+//   if (Array.isArray(data)) return data;
+//   if (typeof data === 'object') return [data];
+//   return [];
+// }
+
 
   applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value;

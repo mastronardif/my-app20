@@ -41,6 +41,20 @@ export class DynamicGridFormComponent {
     }
   }
 
+  onCheckboxChange(fieldKey: string, option: string, event: any): void {
+  const currentValues = this.formGroup.value[fieldKey] || [];
+  if (event.target.checked) {
+    this.formGroup.patchValue({
+      [fieldKey]: [...currentValues, option],
+    });
+  } else {
+    this.formGroup.patchValue({
+      [fieldKey]: currentValues.filter((v: string) => v !== option),
+    });
+  }
+}
+
+
   onSubmit(): void {
     if (this.formGroup.valid) {
       console.log('✅ Submitted:', this.formGroup.value);

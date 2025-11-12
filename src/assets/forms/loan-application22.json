@@ -28,6 +28,30 @@
         { "key": "loanPurpose", "label": "Purpose of Loan", "type": "select", "options": ["Home", "Auto", "Education", "Personal"] },
         { "key": "termLength", "label": "Term (Years)", "type": "number" }
       ]
+    },
+    {
+      "title": "Preferences",
+      "gridPosition": { "row": 4, "col": 2, "rowSpan": 1, "colSpan": 1 },
+      "fields": [
+        {
+          "key": "department",
+          "label": "Department",
+          "type": "select",
+          "options": ["IT", "HR", "Finance"]
+        },
+        {
+          "key": "employmentType",
+          "label": "Employment Type",
+          "type": "radio",
+          "options": ["Full-Time", "Part-Time", "Contract"]
+        },
+        {
+          "key": "skills",
+          "label": "Skills",
+          "type": "checkbox",
+          "options": ["Angular", "React", "Vue", "Node.js"]
+        }
+      ]
     }
   ]
 }

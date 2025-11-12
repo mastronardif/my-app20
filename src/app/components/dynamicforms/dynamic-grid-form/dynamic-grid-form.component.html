@@ -9,17 +9,57 @@
       [style.gridColumn]="section.gridPosition?.col + ' / span ' + (section.gridPosition?.colSpan || 1)"
     >
       <h2>{{ section.title }}</h2>
+
       <div *ngFor="let field of section.fields" class="form-field">
         <label>{{ field.label }}</label>
-        <input *ngIf="field.type !== 'select'"
-               [type]="field.type"
-               [formControlName]="field.key"
-               [required]="field.required" />
+
+        <!-- Standard Inputs -->
+        <input
+          *ngIf="['text', 'email', 'number', 'date'].includes(field.type)"
+          [type]="field.type"
+          [formControlName]="field.key"
+          [required]="field.required"
+        />
+
+        <!-- Dropdown -->
         <select *ngIf="field.type === 'select'" [formControlName]="field.key">
           <option *ngFor="let opt of field.options" [value]="opt">{{ opt }}</option>
         </select>
+
+        <!-- Radio Buttons -->
+        <div *ngIf="field.type === 'radio'" class="radio-group">
+          <label *ngFor="let opt of field.options" class="radio-option">
+            <input
+              type="radio"
+              [formControlName]="field.key"
+              [value]="opt"
+            />
+            {{ opt }}
+          </label>
+        </div>
+
+        <!-- Checkbox Group -->
+        <div *ngIf="field.type === 'checkbox'" class="checkbox-group">
+          <label *ngFor="let opt of field.options" class="checkbox-option">
+            <input
+              type="checkbox"
+              [checked]="formGroup.value[field.key]?.includes(opt)"
+              (change)="onCheckboxChange(field.key, opt, $event)"
+            />
+            {{ opt }}
+          </label>
+        </div>
+
+        <!-- Validation Message -->
+        <div
+          class="error"
+          *ngIf="formGroup.controls[field.key]?.invalid && formGroup.controls[field.key]?.touched"
+        >
+          {{ field.label }} is required
+        </div>
       </div>
     </div>
   </div>
+
   <button type="submit" [disabled]="formGroup.invalid">Submit</button>
 </form>

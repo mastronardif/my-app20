@@ -1,0 +1,64 @@
+Option Compare Database
+Option Explicit
+
+Public Sub ExportFormsToJSON()
+    Dim frm As Access.Form
+    Dim ctl As Control
+    Dim fs As Object
+    Dim f As Object
+    Dim formData As String
+    Dim formName As String
+    Dim exportPath As String
+    
+    exportPath = CurrentProject.Path & "\forms_metadata.json"
+    
+    Set fs = CreateObject("Scripting.FileSystemObject")
+    Set f = fs.CreateTextFile(exportPath, True)
+    
+    f.WriteLine "["
+    
+    Dim firstForm As Boolean
+    firstForm = True
+    
+    For Each frm In Application.CurrentProject.AllForms
+        DoCmd.OpenForm frm.Name, acDesign, , , , acHidden
+        If Not firstForm Then f.WriteLine ","
+        firstForm = False
+        
+        formData = "  {""formName"": """ & frm.Name & """, ""controls"": ["
+        
+        Dim firstCtrl As Boolean
+        firstCtrl = True
+        
+        For Each ctl In Forms(frm.Name).Controls
+            If ctl.ControlType = acTextBox Or ctl.ControlType = acComboBox Or ctl.ControlType = acCheckBox Then
+                If Not firstCtrl Then formData = formData & ","
+                firstCtrl = False
+                
+                formData = formData & vbCrLf & "    {"
+                formData = formData & """name"": """ & ctl.Name & """, "
+                formData = formData & """label"": """ & ctl.Caption & """, "
+                formData = formData & """type"": """ & ControlTypeName(ctl.ControlType) & """, "
+                formData = formData & """source"": """ & ctl.ControlSource & """}"
+            End If
+        Next ctl
+        
+        formData = formData & "]}"
+        f.WriteLine formData
+        DoCmd.Close acForm, frm.Name, acSaveNo
+    Next frm
+    
+    f.WriteLine "]"
+    f.Close
+    
+    MsgBox "✅ Export complete! JSON saved to: " & exportPath
+End Sub
+
+Private Function ControlTypeName(t As Integer) As String
+    Select Case t
+        Case acTextBox: ControlTypeName = "text"
+        Case acComboBox: ControlTypeName = "select"
+        Case acCheckBox: ControlTypeName = "checkbox"
+        Case Else: ControlTypeName = "unknown"
+    End Select
+End Function

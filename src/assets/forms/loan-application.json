@@ -1,0 +1,30 @@
+{
+  "title": "Loan Application Form",
+  "sections": [
+    {
+      "title": "Personal Information",
+      "fields": [
+        { "key": "firstName", "label": "First Name", "type": "text", "required": true },
+        { "key": "lastName", "label": "Last Name", "type": "text", "required": true },
+        { "key": "email", "label": "Email Address", "type": "email", "required": true },
+        { "key": "dob", "label": "Date of Birth", "type": "date" }
+      ]
+    },
+    {
+      "title": "Employment Details",
+      "fields": [
+        { "key": "employerName", "label": "Employer Name", "type": "text", "required": true },
+        { "key": "income", "label": "Annual Income ($)", "type": "number", "required": true },
+        { "key": "employmentStatus", "label": "Employment Status", "type": "select", "options": ["Full-Time", "Part-Time", "Unemployed", "Self-Employed"] }
+      ]
+    },
+    {
+      "title": "Loan Information",
+      "fields": [
+        { "key": "loanAmount", "label": "Loan Amount Requested", "type": "number", "required": true },
+        { "key": "loanPurpose", "label": "Purpose of Loan", "type": "select", "options": ["Home", "Auto", "Education", "Personal"] },
+        { "key": "termLength", "label": "Term (Years)", "type": "number" }
+      ]
+    }
+  ]
+}

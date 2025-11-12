@@ -1,0 +1,25 @@
+   <h2>{{ formConfig?.title }}</h2>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div *ngFor="let field of formConfig?.fields">
+        <label>{{ field.label }}</label>
+
+        <!-- Text / Number Inputs -->
+        <input *ngIf="field.type === 'text' || field.type === 'number'"
+               [type]="field.type"
+               [formControlName]="field.name"
+               [required]="field.required">
+
+        <!-- Select Dropdown -->
+        <select *ngIf="field.type === 'select'" [formControlName]="field.name">
+          <option *ngFor="let opt of field.options" [value]="opt">{{ opt }}</option>
+        </select>
+
+        <br>
+      </div>
+
+      <button type="submit" [disabled]="form.invalid">Submit</button>
+    </form>
+
+    <hr>
+    <pre>{{ form.value | json }}</pre>

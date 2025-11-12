@@ -1,0 +1,25 @@
+<h1 *ngIf="formSchema">{{ formSchema.title }}</h1>
+
+<form *ngIf="isLoaded" [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+  <div class="grid-container">
+    <div
+      class="grid-item"
+      *ngFor="let section of formSchema.sections"
+      [style.gridRow]="section.gridPosition?.row + ' / span ' + (section.gridPosition?.rowSpan || 1)"
+      [style.gridColumn]="section.gridPosition?.col + ' / span ' + (section.gridPosition?.colSpan || 1)"
+    >
+      <h2>{{ section.title }}</h2>
+      <div *ngFor="let field of section.fields" class="form-field">
+        <label>{{ field.label }}</label>
+        <input *ngIf="field.type !== 'select'"
+               [type]="field.type"
+               [formControlName]="field.key"
+               [required]="field.required" />
+        <select *ngIf="field.type === 'select'" [formControlName]="field.key">
+          <option *ngFor="let opt of field.options" [value]="opt">{{ opt }}</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <button type="submit" [disabled]="formGroup.invalid">Submit</button>
+</form>

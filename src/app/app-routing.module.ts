@@ -2,6 +2,9 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 // import { WtfComponent } from './comps/wtf/wtf.component';
+import { DynamicApplicationComponent } from './components/dynamicforms/dynamic-application/dynamic-application.component';
+import { DynamicFormComponent } from './components/dynamicforms/dynamic-form/dynamic-form.component';
+import { DynamicGridFormComponent } from './components/dynamicforms/dynamic-grid-form/dynamic-grid-form.component';
 import { MyMatComponent } from './components/mymat/mymat.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { TableFromUrlComponent } from './components/tables/table-from-url/table-from-url.component';
@@ -35,6 +38,9 @@ const routes: Routes = [
   { path: 'nf', component: PageNotFoundComponent, data: { title: 'Not Found' }  },
   { path: 'tablefromurl', component: TableFromUrlComponent, data: { title: 'url table' } },
   { path: 'mymat', component: MyMatComponent, data: { title: 'Materal' } },
+  { path: 'dynamicform', component: DynamicFormComponent , data: { title: 'Dynamic Form' } },
+  { path: 'dynamicapplication', component: DynamicApplicationComponent , data: { title: 'Dynamic Application' } },
+  { path: 'dynamicgridform', component: DynamicGridFormComponent , data: { title: 'Dynamic Grod Form' } },
 
   { path: 'nf', component: PageNotFoundComponent, data: { title: 'Not Found', hideFromNav: true } }, // dynamic route
 

@@ -2,55 +2,64 @@ Option Compare Database
 Option Explicit
 
 Public Sub ExportFormsToJSON()
-    Dim frm As Access.Form
+    Dim objForm As AccessObject
+    Dim frm As Form
     Dim ctl As Control
     Dim fs As Object
     Dim f As Object
     Dim formData As String
-    Dim formName As String
     Dim exportPath As String
-    
+
     exportPath = CurrentProject.Path & "\forms_metadata.json"
-    
+
     Set fs = CreateObject("Scripting.FileSystemObject")
     Set f = fs.CreateTextFile(exportPath, True)
-    
+
     f.WriteLine "["
-    
     Dim firstForm As Boolean
     firstForm = True
-    
-    For Each frm In Application.CurrentProject.AllForms
-        DoCmd.OpenForm frm.Name, acDesign, , , , acHidden
+
+    ' Loop through all forms in the project
+    For Each objForm In CurrentProject.AllForms
+        ' Try opening the form in design mode
+        DoCmd.OpenForm objForm.Name, acDesign, , , , acHidden
+
         If Not firstForm Then f.WriteLine ","
         firstForm = False
-        
-        formData = "  {""formName"": """ & frm.Name & """, ""controls"": ["
-        
+
+        formData = "  {""formName"": """ & objForm.Name & """, ""controls"": ["
         Dim firstCtrl As Boolean
         firstCtrl = True
-        
-        For Each ctl In Forms(frm.Name).Controls
-            If ctl.ControlType = acTextBox Or ctl.ControlType = acComboBox Or ctl.ControlType = acCheckBox Then
-                If Not firstCtrl Then formData = formData & ","
-                firstCtrl = False
-                
-                formData = formData & vbCrLf & "    {"
-                formData = formData & """name"": """ & ctl.Name & """, "
-                formData = formData & """label"": """ & ctl.Caption & """, "
-                formData = formData & """type"": """ & ControlTypeName(ctl.ControlType) & """, "
-                formData = formData & """source"": """ & ctl.ControlSource & """}"
-            End If
+
+        For Each ctl In Forms(objForm.Name).Controls
+            ' Only include useful controls
+            Select Case ctl.ControlType
+                Case acTextBox, acComboBox, acCheckBox
+                    If Not firstCtrl Then formData = formData & ","
+                    firstCtrl = False
+
+                    Dim captionText As String
+                    On Error Resume Next
+                    captionText = ctl.Caption
+                    On Error GoTo 0
+
+                    formData = formData & vbCrLf & "    {"
+                    formData = formData & """name"": """ & ctl.Name & """, "
+                    formData = formData & """label"": """ & Replace(captionText, """", "'") & """, "
+                    formData = formData & """type"": """ & ControlTypeName(ctl.ControlType) & """, "
+                    formData = formData & """source"": """ & ctl.ControlSource & """}"
+            End Select
         Next ctl
-        
-        formData = formData & "]}"
+
+        formData = formData & vbCrLf & "  ]}"
         f.WriteLine formData
-        DoCmd.Close acForm, frm.Name, acSaveNo
-    Next frm
-    
+
+        DoCmd.Close acForm, objForm.Name, acSaveNo
+    Next objForm
+
     f.WriteLine "]"
     f.Close
-    
+
     MsgBox "✅ Export complete! JSON saved to: " & exportPath
 End Sub
 

@@ -40,7 +40,7 @@ const routes: Routes = [
   { path: 'mymat', component: MyMatComponent, data: { title: 'Materal' } },
   { path: 'dynamicform', component: DynamicFormComponent , data: { title: 'Dynamic Form' } },
   { path: 'dynamicapplication', component: DynamicApplicationComponent , data: { title: 'Dynamic Application' } },
-  { path: 'dynamicgridform', component: DynamicGridFormComponent , data: { title: 'Dynamic Grod Form' } },
+  { path: 'dynamicgridform', component: DynamicGridFormComponent , data: { title: 'Dynamic Grid Form' } },
 
   { path: 'nf', component: PageNotFoundComponent, data: { title: 'Not Found', hideFromNav: true } }, // dynamic route
 

@@ -3,3 +3,28 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+.debug-box {
+  background: #ffe4e1;              /* light pink */
+  border: 2px dashed #d81b60;       /* magenta border for visibility */
+  border-radius: 6px;
+  padding: 8px 12px;
+  margin: 8px 0;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 13px;
+  color: #222;
+}
+
+.debug-title {
+  font-weight: bold;
+  color: #ad1457;
+  margin-bottom: 4px;
+}
+
+.debug-json {
+  background: #fff0f5;
+  border-radius: 4px;
+  padding: 6px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-x: auto;
+}

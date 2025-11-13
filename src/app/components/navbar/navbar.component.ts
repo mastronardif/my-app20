@@ -2,8 +2,8 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { HttpClient } from '@angular/common/http';
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import { map, shareReplay } from 'rxjs/operators';
+import { Observable, interval } from 'rxjs';
+import { map, shareReplay, startWith } from 'rxjs/operators';
 import { GlobalDataService } from '../../services/global-data.service';
 
 @Component({
@@ -16,7 +16,10 @@ export class NavbarComponent implements OnInit, AfterViewInit {
   @Input() prevent?: boolean;
   isHandset$: Observable<boolean>;
   now = Date.now();
-  navLinks: { path: string; title: string }[] = [];
+
+  /** ✅ navLinks$ is now an Observable for async pipe */
+  // navLinks$!: Observable<{ path: string; title: string }[]>;
+ navLinks: { path: string; title: string }[] = [];
 
   constructor(
     private http: HttpClient,
@@ -25,38 +28,23 @@ export class NavbarComponent implements OnInit, AfterViewInit {
     private breakpointObserver: BreakpointObserver,
     public globalData: GlobalDataService
   ) {
-    // ✅ Build nav links safely
-    // this.navLinks = this.router.config
-    //   .filter(r => !r.data?.['hideFromNav'] && !!r.data?.['title'] && r.path)
-    //   .map(r => ({
-    //     path: '/' + r.path,
-    //     title: r.data?.['title'] ?? '',
-    //   }));
-
-       this.navLinks =    this.router.config
+    /** Responsive observer */
+           this.navLinks =    this.router.config
       .filter(r => !r.data?.['hideFromNav'])
       .map(r => ({
         path: '/' + r.path,
         title: r.data?.['title'] ?? '',
       }));
 
-
-    // ✅ Track handset layout
     this.isHandset$ = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
       map(result => result.matches),
       shareReplay()
     );
 
-    // ✅ Update clock every 15 seconds
-    setInterval(() => {
-      this.now = Date.now();
-      console.log(`Hello ${this.now}`);
-    }, 15000);
-
-    console.log('Router config:', this.router.config);
-console.log('NavLinks:', this.navLinks);
-
-
+    /** Reactive clock (optional) */
+    interval(15000)
+      .pipe(startWith(0))
+      .subscribe(() => (this.now = Date.now()));
   }
 
   ngOnInit(): void {
@@ -73,7 +61,7 @@ console.log('NavLinks:', this.navLinks);
   }
 
   fetchUser(): void {
-    this.http.get('https://api.github.com/users/mastronardif').subscribe((res) => {
+    this.http.get('https://api.github.com/users/mastronardif').subscribe(res => {
       console.log(res);
     });
   }

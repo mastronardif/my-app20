@@ -1,3 +1,6 @@
+Option Compare Database
+Option Explicit
+
 Public Sub ExportFormsToJSON()
     Dim objForm As AccessObject
     Dim ctl As Control
@@ -31,18 +34,12 @@ Public Sub ExportFormsToJSON()
                     If Not firstCtrl Then formData = formData & ","
                     firstCtrl = False
 
-                    Dim captionText As String, eventInfo As String
-                    On Error Resume Next
-                    captionText = ctl.Caption
-                    eventInfo = ctl.OnClick
-                    On Error GoTo 0
-
                     formData = formData & vbCrLf & "    {"
-                    formData = formData & """name"": """ & ctl.Name & """, "
-                    formData = formData & """label"": """ & Replace(captionText, """", "'") & """, "
+                    formData = formData & """name"": """ & SafeString(ctl.Name) & """, "
+                    formData = formData & """label"": """ & SafeString(GetProp(ctl, "Caption")) & """, "
                     formData = formData & """type"": """ & ControlTypeName(ctl.ControlType) & """, "
-                    formData = formData & """source"": """ & ctl.ControlSource & """, "
-                    formData = formData & """event"": """ & Replace(eventInfo, """", "'") & """"
+                    formData = formData & """source"": """ & SafeString(GetProp(ctl, "ControlSource")) & """, "
+                    formData = formData & """event"": """ & SafeString(GetProp(ctl, "OnClick")) & """"
                     formData = formData & "}"
             End Select
         Next ctl
@@ -57,6 +54,24 @@ Public Sub ExportFormsToJSON()
 
     MsgBox "✅ Export complete! JSON saved to: " & exportPath
 End Sub
+
+Private Function GetProp(obj As Object, propName As String) As String
+    On Error Resume Next
+    GetProp = CallByName(obj, propName, VbGet)
+    If Err.Number <> 0 Then
+        GetProp = ""
+        Err.Clear
+    End If
+    On Error GoTo 0
+End Function
+
+Private Function SafeString(s As Variant) As String
+    If IsNull(s) Or s = "" Then
+        SafeString = ""
+    Else
+        SafeString = Replace(s, """", "'")
+    End If
+End Function
 
 Private Function ControlTypeName(t As Integer) As String
     Select Case t

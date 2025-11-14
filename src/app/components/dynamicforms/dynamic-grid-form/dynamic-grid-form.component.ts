@@ -1,25 +1,29 @@
 // dynamic-grid-form.component.ts
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { FormLoaderService } from '../../../services/form-loader.service';
 
 @Component({
   selector: 'app-dynamic-grid-form',
-  templateUrl: './dynamic-grid-form.component.html',
-  styleUrls: ['./dynamic-grid-form.component.css'],
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
+  templateUrl: './dynamic-grid-form.component.html',
+  styleUrls: ['./dynamic-grid-form.component.css'],
 })
 export class DynamicGridFormComponent {
-  // @Input() formJson: any = {};
   formSchema: any;
-  formGroup: FormGroup;
+  formGroup!: FormGroup;
   isLoaded = false;
 
-  constructor(private fb: FormBuilder, private formLoader: FormLoaderService) {
-    this.formGroup = this.fb.group({});
-  }
+  constructor(private fb: FormBuilder, private formLoader: FormLoaderService) {}
 
   ngOnInit(): void {
     this.formLoader.loadForm('loan-application22').subscribe((schema) => {
@@ -29,37 +33,62 @@ export class DynamicGridFormComponent {
     });
   }
 
+  // ---------------------------------------------------
+  // Build ALL controls dynamically
+  // ---------------------------------------------------
   private buildForm() {
-    if (!this.formSchema?.sections) return;
+    const group: any = {};
 
     for (const section of this.formSchema.sections) {
       for (const field of section.fields) {
         const validators = [];
         if (field.required) validators.push(Validators.required);
-        this.formGroup.addControl(field.key, this.fb.control('', validators));
+
+        if (field.type === 'checkbox') {
+          // If options exist and length > 1 → FormArray (group)
+          if (field.options && field.options.length > 1) {
+            group[field.key] = this.fb.array([], validators);
+          } else {
+            // Single checkbox → boolean FormControl
+            group[field.key] = new FormControl(false, validators);
+          }
+        } else {
+          group[field.key] = new FormControl('', validators); // radios / text
+        }
       }
     }
+
+    this.formGroup = this.fb.group(group);
   }
 
-  onCheckboxChange(fieldKey: string, option: string, event: any): void {
-  const currentValues = this.formGroup.value[fieldKey] || [];
-  if (event.target.checked) {
-    this.formGroup.patchValue({
-      [fieldKey]: [...currentValues, option],
-    });
-  } else {
-    this.formGroup.patchValue({
-      [fieldKey]: currentValues.filter((v: string) => v !== option),
-    });
-  }
-}
+  onCheckboxChange(event: any, key: string) {
+    const control = this.formGroup.get(key);
 
+    if (control instanceof FormArray) {
+      const value = event.target.value;
 
-  onSubmit(): void {
-    if (this.formGroup.valid) {
-      console.log('✅ Submitted:', this.formGroup.value);
-    } else {
-      console.warn('⚠️ Form invalid');
+      if (event.target.checked) {
+        control.push(new FormControl(value));
+      } else {
+        const index = control.controls.findIndex((x) => x.value === value);
+        control.removeAt(index);
+      }
+    } else if (control instanceof FormControl) {
+      // Single checkbox → just set true/false
+      control.setValue(event.target.checked);
     }
+  }
+
+  // ---------------------------------------------------
+  // Submit handler
+  // ---------------------------------------------------
+  onSubmit(): void {
+    if (!this.formGroup.valid) {
+      this.formGroup.markAllAsTouched();
+      console.warn('⚠️ Form invalid');
+      return;
+    }
+
+    console.log('✅ FORM SUBMITTED:', this.formGroup.value);
   }
 }

@@ -1,57 +1,69 @@
 {
-  "title": "Loan Application Form",
+  "title": "Grid Layout Test",
   "sections": [
     {
-      "title": "Personal Information",
+      "title": "Profile",
       "gridPosition": { "row": 1, "col": 1, "rowSpan": 2, "colSpan": 1 },
       "fields": [
         { "key": "firstName", "label": "First Name", "type": "text", "required": true },
         { "key": "lastName", "label": "Last Name", "type": "text", "required": true },
-        { "key": "email", "label": "Email Address", "type": "email", "required": true },
-        { "key": "dob", "label": "Date of Birth", "type": "date" }
-      ]
-    },
-    {
-      "title": "Employment Details",
-      "gridPosition": { "row": 3, "col": 1, "rowSpan": 1, "colSpan": 2 },
-      "fields": [
-        { "key": "employerName", "label": "Employer Name", "type": "text", "required": true },
-        { "key": "income", "label": "Annual Income ($)", "type": "number", "required": true },
-        { "key": "employmentStatus", "label": "Employment Status", "type": "select", "options": ["Full-Time", "Part-Time", "Unemployed", "Self-Employed"] }
-      ]
-    },
-    {
-      "title": "Loan Information",
-      "gridPosition": { "row": 1, "col": 2, "rowSpan": 2, "colSpan": 1 },
-      "fields": [
-        { "key": "loanAmount", "label": "Loan Amount Requested", "type": "number", "required": true },
-        { "key": "loanPurpose", "label": "Purpose of Loan", "type": "select", "options": ["Home", "Auto", "Education", "Personal"] },
-        { "key": "termLength", "label": "Term (Years)", "type": "number" }
+        { "key": "email", "label": "Email", "type": "email" },
+        {
+          "key": "hobbies",
+          "label": "Hobbies",
+          "type": "checkbox",
+          "direction": "horizontal",
+          "options": ["Reading", "Traveling", "Cooking", "Gaming"]
+        },
+        {
+          "key": "newsletter",
+          "label": "Subscribe to newsletter",
+          "type": "checkbox",
+          "options": null
+        }
       ]
     },
     {
       "title": "Preferences",
-      "gridPosition": { "row": 4, "col": 2, "rowSpan": 1, "colSpan": 1 },
+      "gridPosition": { "row": 1, "col": 2, "rowSpan": 1, "colSpan": 2 },
       "fields": [
         {
-          "key": "department",
-          "label": "Department",
-          "type": "select",
-          "options": ["IT", "HR", "Finance"]
-        },
-        {
-          "key": "employmentType",
-          "label": "Employment Type",
+          "key": "contactMethod",
+          "label": "Contact Method",
           "type": "radio",
-          "options": ["Full-Time", "Part-Time", "Contract"]
+          "options": ["Email", "Phone", "SMS"]
         },
+        { "key": "subscribe", "label": "Subscribe", "type": "checkbox", "options": ["Yes"] },
         {
-          "key": "skills",
-          "label": "Skills",
-          "type": "checkbox",
-          "options": ["Angular", "React", "Vue", "Node.js"]
+          "key": "contactMethod2",
+          "label": "Contact Method2",
+          "type": "radio",
+          "direction": "horizontal",
+          "options": ["Email", "Phone", "SMS"]
         }
       ]
+    },
+    {
+      "title": "Additional Info",
+      "gridPosition": { "row": 2, "col": 2, "rowSpan": 1, "colSpan": 1 },
+      "fields": [{ "key": "bio", "label": "Short Bio", "type": "textarea" }]
+    },
+    {
+      "title": "Status",
+      "gridPosition": { "row": 2, "col": 3, "rowSpan": 2, "colSpan": 1 },
+      "fields": [
+        {
+          "key": "employmentStatus",
+          "label": "Employment Status",
+          "type": "select",
+          "options": ["Employed", "Unemployed", "Student"]
+        }
+      ]
+    },
+    {
+      "title": "Notes",
+      "gridPosition": { "row": 3, "col": 1, "rowSpan": 1, "colSpan": 2 },
+      "fields": [{ "key": "notes", "label": "Notes", "type": "textarea" }]
     }
   ]
 }

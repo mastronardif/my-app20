@@ -1,0 +1,25 @@
+<!-- ------------------------------ -->
+<!-- Material Table (Top Section) -->
+<!-- ------------------------------ -->
+<h2>Loans Overview</h2>
+<app-mymat url="apiUrl"></app-mymat>
+
+<hr /><hr />
+<!-- ------------------------------ -->
+<!-- Dynamic Loan Application Form -->
+<!-- ------------------------------ -->
+<div *ngIf="!loading && formSchema">
+  <app-dynamic-grid-form
+    [formSchema]="formSchema"
+    [parentForm]="formGroup">
+  </app-dynamic-grid-form>
+
+  <div style="margin-top: 20px;">
+    <button mat-raised-button color="primary" (click)="onSubmit()">Submit</button>
+    <button mat-raised-button color="warn" (click)="onCancel()">Cancel</button>
+  </div>
+</div>
+
+<ng-template #loadingTpl>
+  <p>Loading form...</p>
+</ng-template>

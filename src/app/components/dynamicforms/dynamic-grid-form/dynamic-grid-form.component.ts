@@ -1,6 +1,5 @@
-// dynamic-grid-form.component.ts
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -9,51 +8,64 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { FormLoaderService } from '../../../services/form-loader.service';
 
 @Component({
   selector: 'app-dynamic-grid-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './dynamic-grid-form.component.html',
   styleUrls: ['./dynamic-grid-form.component.css'],
+  imports: [
+  CommonModule,
+  ReactiveFormsModule
+  ],
+
 })
-export class DynamicGridFormComponent {
-  formSchema: any;
+export class DynamicGridFormComponent implements OnChanges {
+  @Input() formSchema: any;
+  @Input() parentForm!: FormGroup;
+
+  @Output() formSubmit = new EventEmitter<any>();
+
   formGroup!: FormGroup;
   isLoaded = false;
 
-  constructor(private fb: FormBuilder, private formLoader: FormLoaderService) {}
+  constructor(private fb: FormBuilder) {}
 
-  ngOnInit(): void {
-    this.formLoader.loadForm('loan-application22').subscribe((schema) => {
-      this.formSchema = schema;
+  // ---------------------------------------------------
+  // FIX: react when formSchema arrives
+  // ---------------------------------------------------
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['formSchema'] && this.formSchema) {
       this.buildForm();
       this.isLoaded = true;
-    });
+    }
   }
 
-  // ---------------------------------------------------
-  // Build ALL controls dynamically
-  // ---------------------------------------------------
+  getControl(key: string): FormControl {
+    return this.parentForm.get(key) as FormControl;
+  }
+
   private buildForm() {
-    const group: any = {};
+    if (!this.formSchema || !this.formSchema.sections) return;
+
+    const group: Record<string, any> = {};
 
     for (const section of this.formSchema.sections) {
       for (const field of section.fields) {
-        const validators = [];
-        if (field.required) validators.push(Validators.required);
+        const validators = field.required ? [Validators.required] : [];
 
-        if (field.type === 'checkbox') {
-          // If options exist and length > 1 → FormArray (group)
-          if (field.options && field.options.length > 1) {
-            group[field.key] = this.fb.array([], validators);
-          } else {
-            // Single checkbox → boolean FormControl
-            group[field.key] = new FormControl(false, validators);
-          }
-        } else {
-          group[field.key] = new FormControl('', validators); // radios / text
+        switch (field.type) {
+          case 'checkbox':
+            if (field.options?.length > 1) {
+              group[field.key] = this.fb.array([], validators);
+            } else {
+              group[field.key] = new FormControl(false, validators);
+            }
+            break;
+
+          default:
+            group[field.key] = new FormControl('', validators);
+            break;
         }
       }
     }
@@ -79,16 +91,12 @@ export class DynamicGridFormComponent {
     }
   }
 
-  // ---------------------------------------------------
-  // Submit handler
-  // ---------------------------------------------------
   onSubmit(): void {
-    if (!this.formGroup.valid) {
+    if (this.formGroup.invalid) {
       this.formGroup.markAllAsTouched();
-      console.warn('⚠️ Form invalid');
       return;
     }
 
-    console.log('✅ FORM SUBMITTED:', this.formGroup.value);
+    this.formSubmit.emit(this.formGroup.value);
   }
 }

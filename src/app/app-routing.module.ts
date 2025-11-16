@@ -8,6 +8,7 @@ import { DynamicGridFormComponent } from './components/dynamicforms/dynamic-grid
 import { MyMatComponent } from './components/mymat/mymat.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { TableFromUrlComponent } from './components/tables/table-from-url/table-from-url.component';
+import { RequestComponent } from './features/request/request.component';
 // import { AddressComponent } from './comps/address/address.component';
 // import { DashboardComponent } from './comps/dashboard/dashboard.component';
 // import { TableComponent } from './comps/table/table.component';
@@ -41,6 +42,8 @@ const routes: Routes = [
   { path: 'dynamicform', component: DynamicFormComponent , data: { title: 'Dynamic Form' } },
   { path: 'dynamicapplication', component: DynamicApplicationComponent , data: { title: 'Dynamic Application' } },
   { path: 'dynamicgridform', component: DynamicGridFormComponent , data: { title: 'Dynamic Grid Form' } },
+
+  { path: 'myrequest', component: RequestComponent , data: { title: 'My Request' } },
 
   { path: 'nf', component: PageNotFoundComponent, data: { title: 'Not Found', hideFromNav: true } }, // dynamic route
 

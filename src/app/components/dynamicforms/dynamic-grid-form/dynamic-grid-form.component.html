@@ -1,70 +1,72 @@
-<h1 *ngIf="formSchema">{{ formSchema.title }}</h1>
+<div class="dynamic-wrapper mat-typography">
+  <h1 *ngIf="formSchema">{{ formSchema.title }}</h1>
 
-<form *ngIf="isLoaded" [formGroup]="formGroup" (ngSubmit)="onSubmit()">
-  <div class="grid-container">
+  <form *ngIf="isLoaded" [formGroup]="parentForm" (ngSubmit)="onSubmit()">
+    <div class="grid-container">
 
-    <div class="grid-item" *ngFor="let section of formSchema.sections"
-      [style.gridRow]="section.gridPosition?.row + ' / span ' + (section.gridPosition?.rowSpan || 1)"
-      [style.gridColumn]="section.gridPosition?.col + ' / span ' + (section.gridPosition?.colSpan || 1)">
-      <h2>{{ section.title }}</h2>
+      <div class="grid-item" *ngFor="let section of formSchema.sections"
+        [style.gridRow]="section.gridPosition?.row + ' / span ' + (section.gridPosition?.rowSpan || 1)"
+        [style.gridColumn]="section.gridPosition?.col + ' / span ' + (section.gridPosition?.colSpan || 1)">
+        <h2>{{ section.title }}</h2>
 
-      <div *ngFor="let field of section.fields" class="form-field">
+        <div *ngFor="let field of section.fields" class="form-field">
 
-        <!-- LABEL -->
-        <label>{{ field.label }}</label>
+          <!-- LABEL -->
+          <label>{{ field.label }}</label>
 
-        <!-- TEXT INPUTS -->
-        <input *ngIf="['text', 'email', 'number', 'date'].includes(field.type)" [type]="field.type"
-          [formControlName]="field.key" />
+          <!-- TEXT INPUTS -->
+          <input *ngIf="['text', 'email', 'number', 'date'].includes(field.type)" [type]="field.type"
+            [formControlName]="field.key" />
 
-        <!-- SELECT DROPDOWN -->
-        <select *ngIf="field.type === 'select'" [formControlName]="field.key">
-          <option *ngFor="let opt of field.options" [value]="opt">{{ opt }}</option>
-        </select>
+          <!-- SELECT DROPDOWN -->
+          <select *ngIf="field.type === 'select'" [formControlName]="field.key">
+            <option *ngFor="let opt of field.options" [value]="opt">{{ opt }}</option>
+          </select>
 
-        <!-- RADIO GROUP -->
-        <div *ngIf="field.type === 'radio'" [ngClass]="{
+          <!-- RADIO GROUP -->
+          <div *ngIf="field.type === 'radio'" [ngClass]="{
           'radio-vertical': field.direction === 'vertical' || !field.direction,
           'radio-horizontal': field.direction === 'horizontal'}">
-          <label *ngFor="let opt of field.options" class="radio-option">
-            <input type="radio" [formControlName]="field.key" [value]="opt" /> {{ opt }}
-          </label>
-        </div>
+            <label *ngFor="let opt of field.options" class="radio-option">
+              <input type="radio" [formControlName]="field.key" [value]="opt" /> {{ opt }}
+            </label>
+          </div>
 
-        <!-- Single checkbox -->
-        <div *ngIf="field.type === 'checkbox' && (!field.options || field.options.length <= 1)">
-          <label>
-            <input type="checkbox" [formControlName]="field.key" />
-            {{ field.label }}
-          </label>
-        </div>
+          <!-- Single checkbox -->
+          <div *ngIf="field.type === 'checkbox' && (!field.options || field.options.length <= 1)">
+            <label>
+              <input type="checkbox" [formControlName]="field.key" />
+              {{ field.label }}
+            </label>
+          </div>
 
-        <!-- Checkbox group -->
-        <div *ngIf="field.type === 'checkbox' && field.options?.length > 1" [ngClass]="{
+          <!-- Checkbox group -->
+          <div *ngIf="field.type === 'checkbox' && field.options?.length > 1" [ngClass]="{
        'checkbox-vertical': field.direction === 'vertical' || !field.direction,
        'checkbox-horizontal': field.direction === 'horizontal'
      }">
-          <label *ngFor="let opt of field.options">
-            <input type="checkbox" [value]="opt.value ?? opt" (change)="onCheckboxChange($event, field.key)" />
-            {{ opt.label ?? opt }}
-          </label>
-        </div>
+            <label *ngFor="let opt of field.options">
+              <input type="checkbox" [value]="opt.value ?? opt" (change)="onCheckboxChange($event, field.key)" />
+              {{ opt.label ?? opt }}
+            </label>
+          </div>
 
 
 
-        <!-- TEXTAREA -->
-        <textarea *ngIf="field.type === 'textarea'" [rows]="field.rows || 4" class="textarea-control"
-          [formControlName]="field.key" [placeholder]="field.placeholder || ''">
+          <!-- TEXTAREA -->
+          <textarea *ngIf="field.type === 'textarea'" [rows]="field.rows || 4" class="textarea-control"
+            [formControlName]="field.key" [placeholder]="field.placeholder || ''">
         </textarea>
 
-        <!-- ERROR -->
-        <div class="error" *ngIf="formGroup.controls[field.key].invalid && formGroup.controls[field.key].touched">
-          {{ field.label }} is required
-        </div>
+          <!-- ERROR -->
+          <div class="error" *ngIf="formGroup.controls[field.key].invalid && formGroup.controls[field.key].touched">
+            {{ field.label }} is required
+          </div>
 
+        </div>
       </div>
     </div>
-  </div>
 
-  <button type="submit" [disabled]="formGroup.invalid">Submit</button>
-</form>
+    <button type="submit" [disabled]="formGroup.invalid">Submit</button>
+  </form>
+</div>

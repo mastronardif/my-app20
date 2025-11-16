@@ -1,26 +1,37 @@
-<div *ngIf="loading">
-  Loading form and grid...
-</div>
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" mode="side" [opened]="true" fixedInViewport>
+    <mat-toolbar color="primary">Navigation</mat-toolbar>
 
-<div *ngIf="!loading">
+    <mat-nav-list>
+      <a mat-list-item *ngFor="let link of navLinks" [routerLink]="link.path" routerLinkActive="active-link"
+        [routerLinkActiveOptions]="{ exact: true }">
+        {{ link.title }}
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
 
-  <!-- AG Grid -->
-  <div class="ag-theme-alpine" style="width: 100%; height: 400px; margin-bottom: 20px;">
-    <ag-grid-angular
-      [rowData]="rowData"
-      [columnDefs]="columnDefs"
-      [defaultColDef]="{ sortable: true, filter: true, resizable: true }"
-      [animateRows]="true"
-      [rowSelection]="'single'">
-    </ag-grid-angular>
-  </div>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary" class="topbar">
+      <button mat-icon-button (click)="drawer.toggle()" class="menu-button">
+        <mat-icon>menu</mat-icon>
+      </button>
 
-  <!-- Dynamic Loan Form -->
-  <app-dynamic-grid-form
-    *ngIf="formSchema"
-    [formSchema]="formSchema"
-    [parentForm]="formGroup"
-    (formSubmit)="onSubmit()">
-  </app-dynamic-grid-form>
+      <span class="toolbar-title">My App</span>
 
-</div>
+      <span class="spacer"></span>
+
+      <button mat-raised-button color="accent" (click)="onCustomClick()">
+        Set Global Data
+      </button>
+      <span class="custom-text">{{ globalData.message() }}</span>
+    </mat-toolbar>
+
+    <div class="content-area">
+      <router-outlet></router-outlet>
+      <div class="debug-box">
+        <div class="debug-title">Routes</div>
+        <pre class="debug-json">{{ navLinks | json }}</pre>
+      </div>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

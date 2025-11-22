@@ -1,0 +1,95 @@
+Folder PATH listing for volume Windows
+Volume serial number is AC47-A725
+C:.
+¦   custom-theme.scss
+¦   index.html
+¦   main.ts
+¦   styles.css
+¦   tree.txt
+¦   
++---app
+¦   ¦   app-routing.module.ts
+¦   ¦   app.component.css
+¦   ¦   app.component.html
+¦   ¦   app.component.ts
+¦   ¦   app.module.ts
+¦   ¦   reuse-strategy.ts
+¦   ¦   
+¦   +---components
+¦   ¦   +---dynamicforms
+¦   ¦   ¦   +---dynamic-application
+¦   ¦   ¦   ¦       dynamic-application.component.css
+¦   ¦   ¦   ¦       dynamic-application.component.html
+¦   ¦   ¦   ¦       dynamic-application.component.ts
+¦   ¦   ¦   ¦       
+¦   ¦   ¦   +---dynamic-form
+¦   ¦   ¦   ¦       dynamic-form.component.css
+¦   ¦   ¦   ¦       dynamic-form.component.html
+¦   ¦   ¦   ¦       dynamic-form.component.ts
+¦   ¦   ¦   ¦       
+¦   ¦   ¦   +---dynamic-grid-form
+¦   ¦   ¦           dynamic-grid-form.component.css
+¦   ¦   ¦           dynamic-grid-form.component.html
+¦   ¦   ¦           dynamic-grid-form.component.ts
+¦   ¦   ¦           
+¦   ¦   +---myaggrid
+¦   ¦   ¦       ag-grid-standalone.component.css
+¦   ¦   ¦       ag-grid-standalone.component.html
+¦   ¦   ¦       ag-grid-standalone.component.ts
+¦   ¦   ¦       
+¦   ¦   +---mymat
+¦   ¦   ¦       mymat.component.css
+¦   ¦   ¦       mymat.component.html
+¦   ¦   ¦       mymat.component.ts
+¦   ¦   ¦       
+¦   ¦   +---navbar
+¦   ¦   ¦       navbar.component.css
+¦   ¦   ¦       navbar.component.html
+¦   ¦   ¦       navbar.component.ts
+¦   ¦   ¦       
+¦   ¦   +---page-not-found
+¦   ¦   ¦       page-not-found.component.css
+¦   ¦   ¦       page-not-found.component.html
+¦   ¦   ¦       page-not-found.component.ts
+¦   ¦   ¦       
+¦   ¦   +---spinner
+¦   ¦   ¦       spinner.component.css
+¦   ¦   ¦       spinner.component.html
+¦   ¦   ¦       spinner.component.ts
+¦   ¦   ¦       
+¦   ¦   +---tables
+¦   ¦       +---mytable
+¦   ¦       ¦       mytable.component.css
+¦   ¦       ¦       mytable.component.html
+¦   ¦       ¦       mytable.component.ts
+¦   ¦       ¦       
+¦   ¦       +---table-from-url
+¦   ¦               dialog.html
+¦   ¦               table-from-url.component.html
+¦   ¦               table-from-url.component.ts
+¦   ¦               
+¦   +---core
+¦   +---features
+¦   ¦   +---request
+¦   ¦           request.component.css
+¦   ¦           request.component.html
+¦   ¦           request.component.ts
+¦   ¦           
+¦   +---interceptors
+¦   ¦       spinner.interceptor.ts
+¦   ¦       
+¦   +---services
+¦   ¦       api.service.ts
+¦   ¦       form-loader.service.ts
+¦   ¦       global-data.service.ts
+¦   ¦       spinner.service.ts
+¦   ¦       
+¦   +---utils
+¦           api-utils.ts
+¦           
++---assets
+¦   +---forms
+¦           loan-application.json
+¦           loan-application22.json
+¦           
++---environments

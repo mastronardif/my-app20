@@ -5,6 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { DynamicApplicationComponent } from './components/dynamicforms/dynamic-application/dynamic-application.component';
 import { DynamicFormComponent } from './components/dynamicforms/dynamic-form/dynamic-form.component';
 import { DynamicGridFormComponent } from './components/dynamicforms/dynamic-grid-form/dynamic-grid-form.component';
+import { AgGridStandaloneComponent } from './components/myaggrid/ag-grid-standalone.component';
 import { MyMatComponent } from './components/mymat/mymat.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { TableFromUrlComponent } from './components/tables/table-from-url/table-from-url.component';
@@ -42,6 +43,8 @@ const routes: Routes = [
   { path: 'dynamicform', component: DynamicFormComponent , data: { title: 'Dynamic Form' } },
   { path: 'dynamicapplication', component: DynamicApplicationComponent , data: { title: 'Dynamic Application' } },
   { path: 'dynamicgridform', component: DynamicGridFormComponent , data: { title: 'Dynamic Grid Form' } },
+
+    { path: 'myaggrid', component: AgGridStandaloneComponent , data: { title: 'My ag grid' } },
 
   { path: 'myrequest', component: RequestComponent , data: { title: 'My Request' } },
 

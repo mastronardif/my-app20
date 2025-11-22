@@ -1,22 +1,22 @@
-/* You can add global styles to this file, and also import other style files */
 @import '@angular/material/prebuilt-themes/indigo-pink.css';
+
+@import 'ag-grid-community/styles/ag-theme-alpine.css';
+
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .debug-box {
-  background: #ffe4e1;              /* light pink */
-  border: 2px dashed #d81b60;       /* magenta border for visibility */
+  background: #ffe4e1;
+  border: 2px dashed #d81b60;
   border-radius: 6px;
   padding: 8px 12px;
   margin: 8px 0;
   font-family: 'Roboto Mono', monospace;
   font-size: 13px;
-  color: #222;
 }
 
 .debug-title {
   font-weight: bold;
-  color: #ad1457;
   margin-bottom: 4px;
 }
 
@@ -25,6 +25,5 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   border-radius: 4px;
   padding: 6px;
   white-space: pre-wrap;
-  word-wrap: break-word;
   overflow-x: auto;
 }

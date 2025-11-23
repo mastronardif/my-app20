@@ -1,12 +1,19 @@
 <div class="dynamic-wrapper mat-typography">
   <h1 *ngIf="formSchema">{{ formSchema.title }}</h1>
 
-  <form *ngIf="isLoaded" [formGroup]="parentForm" (ngSubmit)="onSubmit()">
+  <!-- Use parentForm if provided, otherwise use local formGroup -->
+  <form
+    *ngIf="isLoaded && formSchema"
+    [formGroup]="parentForm || formGroup"
+    (ngSubmit)="onSubmit()"
+  >
     <div class="grid-container">
 
-      <div class="grid-item" *ngFor="let section of formSchema.sections"
+      <div class="grid-item"
+        *ngFor="let section of formSchema.sections"
         [style.gridRow]="section.gridPosition?.row + ' / span ' + (section.gridPosition?.rowSpan || 1)"
-        [style.gridColumn]="section.gridPosition?.col + ' / span ' + (section.gridPosition?.colSpan || 1)">
+        [style.gridColumn]="section.gridPosition?.col + ' / span ' + (section.gridPosition?.colSpan || 1)"
+      >
         <h2>{{ section.title }}</h2>
 
         <div *ngFor="let field of section.fields" class="form-field">
@@ -15,24 +22,38 @@
           <label>{{ field.label }}</label>
 
           <!-- TEXT INPUTS -->
-          <input *ngIf="['text', 'email', 'number', 'date'].includes(field.type)" [type]="field.type"
-            [formControlName]="field.key" />
+          <input
+            *ngIf="['text','email','number','date'].includes(field.type)"
+            [type]="field.type"
+            [formControlName]="field.key"
+          />
 
-          <!-- SELECT DROPDOWN -->
+          <!-- SELECT -->
           <select *ngIf="field.type === 'select'" [formControlName]="field.key">
-            <option *ngFor="let opt of field.options" [value]="opt">{{ opt }}</option>
+            <option *ngFor="let opt of field.options" [value]="opt">
+              {{ opt }}
+            </option>
           </select>
 
           <!-- RADIO GROUP -->
-          <div *ngIf="field.type === 'radio'" [ngClass]="{
-          'radio-vertical': field.direction === 'vertical' || !field.direction,
-          'radio-horizontal': field.direction === 'horizontal'}">
+          <div
+            *ngIf="field.type === 'radio'"
+            [ngClass]="{
+              'radio-vertical': field.direction === 'vertical' || !field.direction,
+              'radio-horizontal': field.direction === 'horizontal'
+            }"
+          >
             <label *ngFor="let opt of field.options" class="radio-option">
-              <input type="radio" [formControlName]="field.key" [value]="opt" /> {{ opt }}
+              <input
+                type="radio"
+                [formControlName]="field.key"
+                [value]="opt"
+              />
+              {{ opt }}
             </label>
           </div>
 
-          <!-- Single checkbox -->
+          <!-- SINGLE CHECKBOX -->
           <div *ngIf="field.type === 'checkbox' && (!field.options || field.options.length <= 1)">
             <label>
               <input type="checkbox" [formControlName]="field.key" />
@@ -40,26 +61,39 @@
             </label>
           </div>
 
-          <!-- Checkbox group -->
-          <div *ngIf="field.type === 'checkbox' && field.options?.length > 1" [ngClass]="{
-       'checkbox-vertical': field.direction === 'vertical' || !field.direction,
-       'checkbox-horizontal': field.direction === 'horizontal'
-     }">
+          <!-- CHECKBOX GROUP -->
+          <div
+            *ngIf="field.type === 'checkbox' && field.options?.length > 1"
+            [ngClass]="{
+              'checkbox-vertical': field.direction === 'vertical' || !field.direction,
+              'checkbox-horizontal': field.direction === 'horizontal'
+            }"
+          >
             <label *ngFor="let opt of field.options">
-              <input type="checkbox" [value]="opt.value ?? opt" (change)="onCheckboxChange($event, field.key)" />
+              <input
+                type="checkbox"
+                [value]="opt.value ?? opt"
+                (change)="onCheckboxChange($event, field.key)"
+              />
               {{ opt.label ?? opt }}
             </label>
           </div>
 
-
-
           <!-- TEXTAREA -->
-          <textarea *ngIf="field.type === 'textarea'" [rows]="field.rows || 4" class="textarea-control"
-            [formControlName]="field.key" [placeholder]="field.placeholder || ''">
-        </textarea>
+          <textarea
+            *ngIf="field.type === 'textarea'"
+            [rows]="field.rows || 4"
+            class="textarea-control"
+            [formControlName]="field.key"
+            [placeholder]="field.placeholder || ''"
+          ></textarea>
 
           <!-- ERROR -->
-          <div class="error" *ngIf="formGroup.controls[field.key].invalid && formGroup.controls[field.key].touched">
+          <div
+            class="error"
+            *ngIf="(parentForm || formGroup).controls[field.key].invalid
+                && (parentForm || formGroup).controls[field.key].touched"
+          >
             {{ field.label }} is required
           </div>
 
@@ -67,6 +101,9 @@
       </div>
     </div>
 
-    <button type="submit" [disabled]="formGroup.invalid">Submit</button>
+    <button type="submit" [disabled]="(parentForm || formGroup).invalid">
+      Submit
+    </button>
+
   </form>
 </div>

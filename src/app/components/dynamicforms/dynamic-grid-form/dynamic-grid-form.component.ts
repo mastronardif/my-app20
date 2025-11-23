@@ -1,52 +1,89 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges
+} from '@angular/core';
 import {
   FormArray,
   FormBuilder,
   FormControl,
   FormGroup,
   ReactiveFormsModule,
-  Validators,
+  Validators
 } from '@angular/forms';
+
+import { ActivatedRoute } from '@angular/router';
+import { FormLoaderService } from '../../../services/form-loader.service';
 
 @Component({
   selector: 'app-dynamic-grid-form',
   standalone: true,
   templateUrl: './dynamic-grid-form.component.html',
   styleUrls: ['./dynamic-grid-form.component.css'],
-  imports: [
-  CommonModule,
-  ReactiveFormsModule
-  ],
-
+  imports: [CommonModule, ReactiveFormsModule],
 })
-export class DynamicGridFormComponent implements OnChanges {
-  @Input() formSchema: any;
+export class DynamicGridFormComponent implements OnInit, OnChanges {
+
+  /** Inputs when embedded in another page */
+  @Input() formSchema: any = null;
   @Input() parentForm!: FormGroup;
+
+  /** Local form when used standalone */
+  formGroup!: FormGroup;
 
   @Output() formSubmit = new EventEmitter<any>();
 
-  formGroup!: FormGroup;
   isLoaded = false;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private route: ActivatedRoute,
+    private formLoader: FormLoaderService
+  ) {}
 
-  // ---------------------------------------------------
-  // FIX: react when formSchema arrives
-  // ---------------------------------------------------
+  // ****************************************************
+  // 1️⃣ Routed mode: load schema from route.data.formname
+  // ****************************************************
+  ngOnInit() {
+    const schemaId = this.route.snapshot.data['formname'];
+
+    if (schemaId) {
+      console.log('📄 Loading schema via route:', schemaId);
+
+      this.formLoader.loadForm(schemaId).subscribe({
+        next: (schema) => {
+          this.formSchema = schema;
+          this.buildForm();
+          this.isLoaded = true;
+        },
+        error: (err) => console.error('❌ Failed to load schema', err)
+      });
+    }
+  }
+
+  // ****************************************************
+  // 2️⃣ Embedded mode: waits for @Input() formSchema
+  // ****************************************************
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['formSchema'] && this.formSchema) {
+    const schemaChanged = changes['formSchema'];
+
+    if (schemaChanged && this.formSchema && !this.route.snapshot.data['formname']) {
+      // Only build form if not routed mode
       this.buildForm();
       this.isLoaded = true;
     }
   }
 
-  getControl(key: string): FormControl {
-    return this.parentForm.get(key) as FormControl;
-  }
-
+  // ****************************************************
+  // Create form — works for both parent or internal form
+  // ****************************************************
   private buildForm() {
-    if (!this.formSchema || !this.formSchema.sections) return;
+    if (!this.formSchema?.sections) return;
 
     const group: Record<string, any> = {};
 
@@ -70,11 +107,27 @@ export class DynamicGridFormComponent implements OnChanges {
       }
     }
 
-    this.formGroup = this.fb.group(group);
+    // Use parent form if passed in, otherwise use local formGroup
+    if (this.parentForm) {
+      Object.keys(group).forEach(key => {
+        if (!this.parentForm.contains(key)) {
+          this.parentForm.addControl(key, group[key]);
+        }
+      });
+    } else {
+      this.formGroup = this.fb.group(group);
+    }
+  }
+
+  // ****************************************************
+  // Checkbox handler — handles parentForm OR formGroup
+  // ****************************************************
+  private get activeForm(): FormGroup {
+    return this.parentForm || this.formGroup;
   }
 
   onCheckboxChange(event: any, key: string) {
-    const control = this.formGroup.get(key);
+    const control = this.activeForm.get(key);
 
     if (control instanceof FormArray) {
       const value = event.target.value;
@@ -86,17 +139,22 @@ export class DynamicGridFormComponent implements OnChanges {
         control.removeAt(index);
       }
     } else if (control instanceof FormControl) {
-      // Single checkbox → just set true/false
       control.setValue(event.target.checked);
     }
   }
 
-  onSubmit(): void {
-    if (this.formGroup.invalid) {
-      this.formGroup.markAllAsTouched();
+  // ****************************************************
+  // Submit — always uses the correct source form
+  // ****************************************************
+  onSubmit() {
+    const form = this.activeForm;
+
+    if (form.invalid) {
+      form.markAllAsTouched();
       return;
     }
 
-    this.formSubmit.emit(this.formGroup.value);
+    console.log("📤 SUBMITTED VALUE:", form.value);
+    this.formSubmit.emit(form.value);
   }
 }

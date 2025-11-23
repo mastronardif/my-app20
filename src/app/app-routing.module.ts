@@ -42,7 +42,7 @@ const routes: Routes = [
   { path: 'mymat', component: MyMatComponent, data: { title: 'Materal' } },
   { path: 'dynamicform', component: DynamicFormComponent , data: { title: 'Dynamic Form' } },
   { path: 'dynamicapplication', component: DynamicApplicationComponent , data: { title: 'Dynamic Application' } },
-  { path: 'dynamicgridform', component: DynamicGridFormComponent , data: { title: 'Dynamic Grid Form' } },
+  { path: 'dynamicgridform', component: DynamicGridFormComponent , data: { title: 'loan-application22', formname: 'loan-application22'} },
 
     { path: 'myaggrid', component: AgGridStandaloneComponent , data: { title: 'My ag grid' } },
 

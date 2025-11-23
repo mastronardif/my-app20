@@ -11,7 +11,8 @@
 <div *ngIf="!loading && formSchema">
   <app-dynamic-grid-form
     [formSchema]="formSchema"
-    [parentForm]="formGroup">
+    [parentForm]="formGroup"
+    (formSubmit)="onSubmit()">
   </app-dynamic-grid-form>
 
   <div style="margin-top: 20px;">

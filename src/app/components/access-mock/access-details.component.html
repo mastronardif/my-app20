@@ -1,4 +1,5 @@
-<!-- Optional: overlay reference image for pixel-matching (hidden by default) -->
+<!-- Optional: overlay reference image for pixel-matching (hidden by default).
+ The uploaded file path is provided as-is so you can toggle it during dev. -->
 <img class="reference" src="/mnt/data/5950e103-0f3e-4668-af90-b8e14c0b1a06.png" alt="reference">
 
 <form [formGroup]="form" (ngSubmit)="onSubmit()" class="access-form">
@@ -22,7 +23,7 @@
       <!-- Middle triplet -->
       <div class="triplet">
 
-        <!-- Forward (with helper text + Currenex Only below) -->
+        <!-- Forward (with helper text) -->
         <div class="box">
           <div class="group-title">Forward</div>
 
@@ -42,15 +43,6 @@
             <label>MTS Limit</label>
             <input formControlName="mtsLimit_forward" />
           </div>
-
-          <!-- Currenex Only inside same visual flow, placed under Forward box -->
-          <div class="sub-note" style="margin-top:10px;">
-            <label style="font-weight:600; font-size:13px;">Currenex Only</label>
-            <div class="field-row" style="grid-template-columns: 120px 1fr; margin-top:6px;">
-              <label>ECN Cust ID</label>
-              <input formControlName="currenexCustId" />
-            </div>
-          </div>
         </div>
 
         <!-- Settlement (with OA Only below) -->
@@ -68,15 +60,6 @@
           <div class="field-row">
             <label>MTS Limit</label>
             <input formControlName="mtsLimit_settlement" />
-          </div>
-
-          <!-- OA Only -->
-          <div class="sub-note" style="margin-top:10px;">
-            <label style="font-weight:600; font-size:13px;">OA Only</label>
-            <div class="field-row" style="grid-template-columns: 120px 1fr; margin-top:6px;">
-              <label>Max Tenor</label>
-              <input formControlName="oaMaxTenor" />
-            </div>
           </div>
         </div>
 
@@ -104,25 +87,47 @@
 
       </div>
 
+      <!-- Sub-row directly under the triplet: Currenex Only (under Forward) and OA Only (under Settlement).
+           We place these in a 3-column grid where only the first and second columns show sub-boxes. -->
+      <div class="sub-row">
+        <div class="sub-box">
+          <div class="sub-title">Currenex Only</div>
+          <div class="field-row" style="grid-template-columns: 120px 1fr;">
+            <label>ECN Cust ID</label>
+            <input formControlName="currenexCustId" />
+          </div>
+        </div>
+
+        <div class="sub-box">
+          <div class="sub-title">OA Only</div>
+          <div class="field-row" style="grid-template-columns: 120px 1fr;">
+            <label>Max Tenor</label>
+            <input formControlName="oaMaxTenor" />
+          </div>
+        </div>
+
+        <div><!-- intentionally empty to keep alignment --></div>
+      </div>
+
       <!-- EFX box: big textarea + FXALL/BBG/ET inside same box below -->
       <div class="box efx-box" style="margin-top:14px;">
         <div class="group-title">EFX</div>
 
         <textarea formControlName="efxNotes" aria-label="EFX notes"></textarea>
 
-        <div class="efx-bottom" style="margin-top:12px; display:flex; gap:18px; align-items:center;">
-          <div style="min-width:220px;">
+        <div class="efx-bottom">
+          <div class="efx-field">
             <label>FXALL Mnemonic Code</label>
             <input formControlName="fxallMnemonic" />
           </div>
 
-          <div style="min-width:220px;">
+          <div class="efx-field">
             <label>BBG Deal Code</label>
             <input formControlName="bbgDealCode" />
           </div>
 
-          <div style="display:flex; align-items:center;">
-            <label style="margin-right:8px;">
+          <div class="efx-field et-field">
+            <label class="inline-check">
               <input type="checkbox" formControlName="etForCms" /> ET for CMS
             </label>
             <small>Sales Single Bank Portal (SSBP)</small>

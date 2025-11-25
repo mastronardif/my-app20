@@ -7,7 +7,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './access-details.component.html',
-  styleUrls: [ './access-details.component.scss']
+  styleUrls: ['./access-details.component.scss']
 })
 export class AccessDetailsComponent {
   form: FormGroup;
@@ -18,7 +18,7 @@ export class AccessDetailsComponent {
       ecnLimit_forward: [''],
       ecnPct_forward: [''],
       mtsLimit_forward: [''],
-       // Currenex Only (below Forward)
+      // Currenex Only (below Forward)
       currenexCustId: [''],
 
       // Settlement
@@ -42,12 +42,7 @@ export class AccessDetailsComponent {
 
       // Special instructions
       specialInstr: [''],
-      skipAuthChecker: [false],
-
-      // // Bottom
-      // fxallMnemonic: [''],
-      // bbgDealCode: [''],
-      // etForCms: [false]
+      skipAuthChecker: [false]
     });
   }
 
@@ -59,28 +54,25 @@ export class AccessDetailsComponent {
   onReject(): void {
     console.warn('Reject clicked — current form value:');
     console.log(this.form.value);
-    // add reject logic here
   }
 
   onApprove(): void {
+    // validate/submit then approve action
+    this.onSubmit();
     console.info('Approve clicked — current form value:');
     console.log(this.form.value);
-    // add approve logic here
   }
 
   onCancel(): void {
-    console.info('Cancel clicked — restoring values or navigating away');
-    // example: reset form (or navigate)
-    // this.form.reset();
+    console.info('Cancel clicked');
+    // optional: this.form.reset();
   }
 
   onComments(): void {
     console.log('Comments clicked');
-    // open comments drawer/modal
   }
 
   onAttachments(): void {
     console.log('Attachments clicked');
-    // open attachments panel
   }
 }

@@ -51,6 +51,28 @@
   gap: 18px;
 }
 
+/* Sub-row below triplet for Currenex / OA small boxes */
+.sub-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 18px;
+  margin-top: 8px;
+  align-items: start;
+}
+.sub-box {
+  border: 1px solid #dbe3e8;
+  background: #fff;
+  padding: 8px;
+  border-radius: 3px;
+  min-height: 56px;
+}
+.sub-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 6px;
+}
+
 .group-title {
   font-size: 13px;
   color: #005a9c;
@@ -66,9 +88,6 @@
   margin: 4px 0 8px 0;
   line-height: 1.2;
 }
-
-/* small sub-note sections (Currenex / OA) */
-.sub-note label { display:block; font-size:13px; margin-bottom:6px; color:#333; }
 
 /* form rows */
 .field-row {
@@ -100,6 +119,13 @@
 }
 
 /* EFX bottom small inputs (inside same box) */
+.efx-bottom {
+  display: grid;
+  grid-template-columns: 220px 220px 1fr;
+  gap: 18px;
+  margin-top: 10px;
+  align-items: center;
+}
 .efx-bottom input {
   padding: 6px 8px;
   border: 1px solid #cfd8df;
@@ -143,6 +169,8 @@
 @media (max-width: 1000px) {
   .form-grid { grid-template-columns: 1fr; }
   .triplet { grid-template-columns: 1fr; }
+  .sub-row { grid-template-columns: 1fr; }
+  .efx-bottom { grid-template-columns: 1fr; }
   .footer { flex-direction: column; gap: 10px; align-items: stretch; }
   .footer-left { justify-content: flex-start; }
   .footer-right { justify-content: flex-end; }

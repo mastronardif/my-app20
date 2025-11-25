@@ -104,55 +104,61 @@
         <div><!-- empty for alignment --></div>
       </div>
 
-      <!-- EFX + Special Instructions side by side -->
-      <div class="efx-special-row" style="display:flex; gap:16px; margin-top:14px;">
 
-        <!-- EFX box -->
-        <div class="efx-special-row" style="display:flex; gap:16px; margin-top:14px;">
+<!-- EFX + Special Instructions side by side -->
+<div class="efx-special-row" style="display:flex; gap:16px; margin-top:14px;">
 
-          <!-- EFX box -->
-          <div class="box efx-box" style="flex:1; display:flex; flex-direction:column;">
-            <div class="group-title">EFX</div>
+  <!-- EFX box -->
+  <div class="box efx-box" style="flex:1; display:flex; flex-direction:column;">
+    <div class="group-title">EFX</div>
 
-            <textarea formControlName="efxNotes" aria-label="EFX notes"
-              style="width:100%; height:80px; resize:vertical; box-sizing:border-box;"></textarea>
+    <textarea formControlName="efxNotes" aria-label="EFX notes"
+      style="width:100%; height:80px; resize:vertical; box-sizing:border-box;"></textarea>
 
-            <!-- Single row below textarea -->
-            <div class="efx-bottom" style="display:flex; gap:16px; margin-top:8px; align-items:center;">
+    <!-- Single row below textarea -->
+    <div class="efx-bottom" style="display:flex; gap:16px; margin-top:8px; align-items:flex-start;">
 
-              <div class="efx-field" style="flex:1; display:flex; flex-direction:column;">
-                <label>FXALL Mnemonic Code</label>
-                <input formControlName="fxallMnemonic" />
-              </div>
-
-              <div class="efx-field" style="flex:1; display:flex; flex-direction:column;">
-                <label>BBG Deal Code</label>
-                <input formControlName="bbgDealCode" />
-              </div>
-
-              <div class="efx-field et-field" style="flex:1; display:flex; align-items:center;">
-                <input type="checkbox" formControlName="etForCms" id="etForCms" />
-                <label for="etForCms" style="margin-left:6px; margin-bottom:0; white-space:nowrap;">
-                  ET for CMS Sales Single Bank Portal (SSBP)
-                </label>
-              </div>
-
-            </div>
-          </div>
-
-          <!-- Special Instructions box -->
-          <div class="box special-instr" style="flex:1; display:flex; flex-direction:column;">
-            <div class="group-title">Special Instructions to MCD:</div>
-            <textarea formControlName="specialInstr"
-              style="width:100%; height:80px; resize:vertical; box-sizing:border-box;"></textarea>
-            <label class="checkbox-row" style="margin-top:8px;">
-              <input type="checkbox" formControlName="skipAuthChecker" />
-              Skip Authorized Checker
-            </label>
-          </div>
-
-        </div>
+      <!-- FXALL Mnemonic -->
+      <div class="efx-field" style="flex:1; display:flex; flex-direction:column;">
+        <label style="white-space:nowrap;">FXALL Mnemonic Code</label>
+        <input formControlName="fxallMnemonic" style="width:100%;" />
       </div>
+
+      <!-- BBG Deal Code -->
+      <div class="efx-field" style="flex:1; display:flex; flex-direction:column;">
+        <label style="white-space:nowrap;">BBG Deal Code</label>
+        <input formControlName="bbgDealCode" style="width:100%;" />
+      </div>
+
+<!-- ET for CMS Field -->
+<div class="efx-field et-field" style="flex:1; display:flex; flex-direction:column; align-items:flex-start;">
+
+  <!-- Top text -->
+  <span style="font-weight:500; margin-bottom:4px;">ET for CMS</span>
+
+  <!-- Checkbox -->
+  <label style="display:flex; align-items:center; gap:6px; margin:0;">
+    <input type="checkbox" formControlName="etForCms" />
+    <span>Sales Single Bank Portal (SSBP)</span>
+  </label>
+
+</div>
+    </div>
+  </div>
+
+  <!-- Special Instructions box -->
+  <div class="box special-instr" style="flex:1; display:flex; flex-direction:column;">
+    <div class="group-title">Special Instructions to MCD:</div>
+    <textarea formControlName="specialInstr"
+      style="width:100%; height:80px; resize:vertical; box-sizing:border-box;"></textarea>
+    <label class="checkbox-row" style="margin-top:8px; display:flex; align-items:center;">
+      <input type="checkbox" formControlName="skipAuthChecker" />
+      <span style="margin-left:6px; white-space:nowrap;">Skip Authorized Checker</span>
+    </label>
+  </div>
+
+</div>
+
 
     </div>
   </div>

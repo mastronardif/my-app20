@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 // import { WtfComponent } from './comps/wtf/wtf.component';
+import { AccessMockComponent } from './components/access-mock/access-mock.component';
 import { DynamicApplicationComponent } from './components/dynamicforms/dynamic-application/dynamic-application.component';
 import { DynamicFormComponent } from './components/dynamicforms/dynamic-form/dynamic-form.component';
 import { DynamicGridFormComponent } from './components/dynamicforms/dynamic-grid-form/dynamic-grid-form.component';
@@ -43,6 +44,8 @@ const routes: Routes = [
   { path: 'dynamicform', component: DynamicFormComponent , data: { title: 'Dynamic Form' } },
   { path: 'dynamicapplication', component: DynamicApplicationComponent , data: { title: 'Dynamic Application' } },
   { path: 'dynamicgridform', component: DynamicGridFormComponent , data: { title: 'loan-application22', formname: 'loan-application22'} },
+
+  { path: 'myraccessmock', component: AccessMockComponent  , data: { title: 'My AccessMockComponent ' } },
 
     { path: 'myaggrid', component: AgGridStandaloneComponent , data: { title: 'My ag grid' } },
 

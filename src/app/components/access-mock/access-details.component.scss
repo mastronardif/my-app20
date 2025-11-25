@@ -1,0 +1,149 @@
+:host {
+  display: block;
+  padding: 18px;
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
+  color: #222;
+  background: #f7f9fb;
+  box-sizing: border-box;
+}
+
+/* Optional reference image; hidden by default */
+.reference {
+  display: none;
+  position: fixed;
+  right: 12px;
+  bottom: 12px;
+  width: 420px;
+  opacity: 0.28;
+  border: 1px solid rgba(0,0,0,0.06);
+  z-index: 1000;
+}
+
+/* Top-level grid */
+.form-grid {
+  display: grid;
+  grid-template-columns: 250px 1fr 220px;
+  grid-auto-rows: auto;
+  gap: 18px;
+  align-items: start;
+  width: 100%;
+}
+
+/* Boxes */
+.box {
+  background: #fff;
+  border: 1px solid #d0d6dc;
+  padding: 10px;
+  border-radius: 3px;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.02) inset;
+}
+
+.placeholder-box {
+  min-height: 140px;
+  border: 1px solid #e6ebef;
+  background: linear-gradient(#fff, #fbfdff);
+}
+
+/* Triplet / columns */
+.triplet {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.group-title {
+  font-size: 13px;
+  color: #005a9c;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+/* helper text under Forward */
+.helper-text {
+  font-size: 12px;
+  font-style: italic;
+  color: #555;
+  margin: 4px 0 8px 0;
+  line-height: 1.2;
+}
+
+/* small sub-note sections (Currenex / OA) */
+.sub-note label { display:block; font-size:13px; margin-bottom:6px; color:#333; }
+
+/* form rows */
+.field-row {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  column-gap: 8px;
+  align-items: center;
+  margin-bottom: 6px;
+  font-size: 13px;
+}
+.field-row input,
+.field-row textarea {
+  padding: 6px 8px;
+  border: 1px solid #cfd8df;
+  border-radius: 2px;
+  width: 100%;
+  box-sizing: border-box;
+  height: 32px;
+}
+
+/* EFX textarea */
+.efx-box textarea {
+  width: 100%;
+  min-height: 120px;
+  padding: 8px;
+  border: 1px solid #d8dee3;
+  background: #fff;
+  resize: vertical;
+}
+
+/* EFX bottom small inputs (inside same box) */
+.efx-bottom input {
+  padding: 6px 8px;
+  border: 1px solid #cfd8df;
+  height: 32px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Special instructions */
+.special-instr textarea { width:100%; min-height: 120px; }
+.checkbox-row { display:block; margin-top:8px; font-size:13px; }
+
+/* Footer */
+.footer {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f1f5f8;
+  border-top: 1px solid #dbe3e8;
+  padding: 12px 18px;
+  margin-top: 18px;
+}
+.footer-left { display:flex; gap:10px; align-items:center; }
+.footer-right { display:flex; gap:10px; align-items:center; }
+
+/* Buttons */
+.btn {
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+}
+.btn.primary { background: #2e7d32; color: #fff; }
+.btn.danger { background: #c62828; color: #fff; }
+.btn.secondary { background: #ffffff; border: 1px solid #cfd8df; color: #333; }
+.btn.neutral { background: #e9eef2; color: #333; }
+
+/* responsiveness */
+@media (max-width: 1000px) {
+  .form-grid { grid-template-columns: 1fr; }
+  .triplet { grid-template-columns: 1fr; }
+  .footer { flex-direction: column; gap: 10px; align-items: stretch; }
+  .footer-left { justify-content: flex-start; }
+  .footer-right { justify-content: flex-end; }
+}

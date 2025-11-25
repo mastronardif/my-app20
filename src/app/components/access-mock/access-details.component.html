@@ -1,5 +1,4 @@
-<!-- Optional: overlay reference image for pixel-matching (hidden by default).
- The uploaded file path is provided as-is so you can toggle it during dev. -->
+<!-- Optional: overlay reference image for pixel-matching (hidden by default) -->
 <img class="reference" src="/mnt/data/5950e103-0f3e-4668-af90-b8e14c0b1a06.png" alt="reference">
 
 <form [formGroup]="form" (ngSubmit)="onSubmit()" class="access-form">
@@ -87,8 +86,7 @@
 
       </div>
 
-      <!-- Sub-row directly under the triplet: Currenex Only (under Forward) and OA Only (under Settlement).
-           We place these in a 3-column grid where only the first and second columns show sub-boxes. -->
+      <!-- Sub-row directly under the triplet -->
       <div class="sub-row">
         <div class="sub-box">
           <div class="sub-title">Currenex Only</div>
@@ -109,48 +107,56 @@
         <div><!-- intentionally empty to keep alignment --></div>
       </div>
 
-      <!-- EFX box: big textarea + FXALL/BBG/ET inside same box below -->
-      <div class="box efx-box" style="margin-top:14px;">
-        <div class="group-title">EFX</div>
+      <!-- EFX + Special Instructions side by side -->
+      <div class="efx-special-row" style="display:flex; gap:16px; margin-top:14px;">
 
-        <textarea formControlName="efxNotes" aria-label="EFX notes"></textarea>
+        <!-- EFX box -->
+<!-- EFX box -->
+<div class="box efx-box" style="margin-top:14px;">
+  <div class="group-title">EFX</div>
 
-        <div class="efx-bottom">
-          <div class="efx-field">
-            <label>FXALL Mnemonic Code</label>
-            <input formControlName="fxallMnemonic" />
-          </div>
+  <textarea formControlName="efxNotes" aria-label="EFX notes" style="width:100%; max-width:100%;"></textarea>
 
-          <div class="efx-field">
-            <label>BBG Deal Code</label>
-            <input formControlName="bbgDealCode" />
-          </div>
+  <!-- Single row below textarea -->
+  <div class="efx-bottom" style="display:flex; gap:16px; margin-top:8px; align-items:flex-start;">
 
-          <div class="efx-field et-field">
-            <label class="inline-check">
-              <input type="checkbox" formControlName="etForCms" /> ET for CMS
-            </label>
-            <small>Sales Single Bank Portal (SSBP)</small>
-          </div>
-        </div>
-      </div>
+    <div class="efx-field" style="flex:1; display:flex; flex-direction:column;">
+      <label>FXALL Mnemonic Code</label>
+      <input formControlName="fxallMnemonic" />
     </div>
 
-    <!-- RIGHT -->
-    <div class="right">
-      <div class="box special-instr">
-        <div class="group-title">Special Instructions to MCD:</div>
-        <textarea formControlName="specialInstr"></textarea>
-        <label class="checkbox-row">
-          <input type="checkbox" formControlName="skipAuthChecker" />
-          Skip Authorized Checker
-        </label>
-      </div>
+    <div class="efx-field" style="flex:1; display:flex; flex-direction:column;">
+      <label>BBG Deal Code</label>
+      <input formControlName="bbgDealCode" />
+    </div>
+
+    <div class="efx-field et-field" style="flex:1; display:flex; flex-direction:column;">
+      <label class="inline-check">
+        <input type="checkbox" formControlName="etForCms" /> ET for CMS
+        <span style="margin-left:8px;">Sales Single Bank Portal (SSBP)</span>
+      </label>
     </div>
 
   </div>
+</div>
 
-  <!-- FOOTER (Option B): left = Comments/Attachments, right = workflow -->
+
+        <!-- Special Instructions box -->
+        <div class="box special-instr" style="flex:1;">
+          <div class="group-title">Special Instructions to MCD:</div>
+          <textarea formControlName="specialInstr" style="width:100%; max-width:400px;"></textarea>
+          <label class="checkbox-row" style="margin-top:8px;">
+            <input type="checkbox" formControlName="skipAuthChecker" />
+            Skip Authorized Checker
+          </label>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
   <footer class="footer">
     <div class="footer-left">
       <button type="button" class="btn secondary" (click)="onComments()">Comments</button>
